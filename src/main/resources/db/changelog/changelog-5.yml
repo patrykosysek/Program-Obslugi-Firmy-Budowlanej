@@ -1,0 +1,16 @@
+databaseChangeLog:
+- changeSet:
+    id: 1619359111435-1
+    author: User (generated)
+    changes:
+    - addPrimaryKey:
+        columnNames: activityId, projectId
+        tableName: activity_project
+- changeSet:
+    id: 1619359111435-2
+    author: User (generated)
+    changes:
+    - dropUniqueConstraint:
+        constraintName: IX_null
+        tableName: activity_project
+
