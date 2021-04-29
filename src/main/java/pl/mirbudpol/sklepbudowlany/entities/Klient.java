@@ -1,4 +1,4 @@
-package pl.mirbudpol.sklepbudowlany.Entity;
+package pl.mirbudpol.sklepbudowlany.entities;
 
 import lombok.*;
 
