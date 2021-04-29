@@ -21,8 +21,7 @@ public class ClientService {
 
 
     @Transactional
-    public Client createClientWithAdress(ClientDTO dto)
-    {
+    public Client createClientWithAdress(ClientDTO dto) {
         final Client client = new Client();
         client.setImie(dto.getImie());
         client.setNazwisko(dto.getNazwisko());
@@ -42,15 +41,12 @@ public class ClientService {
     }
 
     @Transactional
-    public Client createClient(ClientDTO dto)
-    {
+    public Client createClient(ClientDTO dto) {
         final Client client = new Client();
         client.setImie(dto.getImie());
         client.setNazwisko(dto.getNazwisko());
         client.setEmail(dto.getEmail());
         client.setAdres(null);
-
-
 
         return clientRepository.save(client);
     }
