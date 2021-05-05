@@ -26,22 +26,26 @@ public class ThingDTO {
 
     private List<String> kategoriaId;
     private List<String> zdjecia;
+    private List<String> materialyElektroniczne;
     private Float ocena;
 
 
     public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
                     Float cenaSprzedazy, Boolean czyArchiwalny,List<String> kategoriaId){this
-            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,null,null);}
+            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,null,null, null);}
 
     public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
                     Float cenaSprzedazy, Boolean czyArchiwalny,List<String> kategoriaId,List<String> zdjecia){this
-            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,zdjecia,null);}
+            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,zdjecia,null, null);}
+
+    public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
+                    Float cenaSprzedazy, Boolean czyArchiwalny,List<String> kategoriaId,List<String> zdjecia, List<String> materialyElektroniczne){this
+            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,zdjecia,materialyElektroniczne, null);}
 
 
     public ThingDTO(Thing thing)
     {
-        this(thing.getId(),thing.getNazwa(),thing.getOpis(),thing.getCenaZakupu(),thing.getIloscNaMagazynie(),thing.getCenaSprzedazy(),thing.getCzyArchiwalny(),null,null,null);
-
+        this(thing.getId(),thing.getNazwa(),thing.getOpis(),thing.getCenaZakupu(),thing.getIloscNaMagazynie(),thing.getCenaSprzedazy(),thing.getCzyArchiwalny(),null,null,null, null);
     }
 
 

@@ -30,7 +30,10 @@ public class ThingController {
     public void addObjectWithImages(@Validated @RequestBody ThingDTO dto){
         thingService.creatThingWithImg(dto);}
 
-
+    @PostMapping(path = "/dodajzImgMaterialyElektroniczne")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addObjectWithImagesAndElectronicMaterials(@Validated @RequestBody ThingDTO dto){
+        thingService.creatThingWithImgAndElectronicMaterials(dto);}
 
     @GetMapping(path = "/polecane")
     @ResponseStatus(HttpStatus.OK)

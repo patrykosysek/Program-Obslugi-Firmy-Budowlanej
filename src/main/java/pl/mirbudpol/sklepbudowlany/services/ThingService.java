@@ -104,6 +104,64 @@ public class ThingService {
         return thingRepository.save(thing);
     }
 
+
+    @Transactional
+    public Thing creatThingWithImgAndElectronicMaterials(ThingDTO dto){
+
+        final Thing thing = new Thing();
+        thing.setNazwa(dto.getNazwa());
+        thing.setOpis(dto.getOpis());
+        thing.setCenaZakupu(dto.getCenaZakupu());
+        thing.setIloscNaMagazynie(dto.getIloscNaMagazynie());
+        thing.setCenaSprzedazy(dto.getCenaSprzedazy());
+        thing.setCzyArchiwalny(dto.getCzyArchiwalny());
+
+        List<Images> zdjecia = new ArrayList<>();
+        for (String ref: dto.getZdjecia())
+        {
+            Images zdjecie = new Images();
+            zdjecie.setRef(ref);
+            zdjecie.setThing(thing);
+            zdjecia.add(zdjecie);
+        }
+
+        List<ElectronicMaterial> materalyElektroniczne = new ArrayList<>();
+        for (String ref: dto.getZdjecia())
+        {
+            ElectronicMaterial electronicMaterial = new ElectronicMaterial();
+            electronicMaterial.setRef(ref);
+            electronicMaterial.setThing(thing);
+            materalyElektroniczne.add(electronicMaterial);
+        }
+
+        List<Category> kategorie = new ArrayList<>();
+
+        for(String nazwa : dto.getKategoriaId())
+        {
+            Category kategoria = categoryRepository.findByNazwaKategorii(nazwa);
+            if(kategoria!=null)
+                kategorie.add(kategoria);
+        }
+
+        List<CategoryObject> przedmiotyKategorie = new ArrayList<>();
+
+        for(Category kategoria: kategorie)
+        {
+            CategoryObject objektKategorii = new CategoryObject();
+            objektKategorii.setThing(thing);
+            objektKategorii.setCategory(kategoria);
+            przedmiotyKategorie.add(objektKategorii);
+        }
+
+        thing.setCategoryObjects(przedmiotyKategorie);
+        thing.setZdjecia(zdjecia);
+        thing.setMaterialyElektoniczne(materalyElektroniczne);
+
+        return thingRepository.save(thing);
+    }
+
+
+
     public List<ThingDTOpage1> recommendedThings() {
 
     Map<Long,Float> srednia = new HashMap<>();

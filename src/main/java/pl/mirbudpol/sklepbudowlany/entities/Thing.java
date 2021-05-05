@@ -51,6 +51,9 @@ public class Thing extends ID {
             cascade = CascadeType.ALL)
     private List<Images> zdjecia = new ArrayList<>();
 
+    @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<ElectronicMaterial> materialyElektoniczne = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
