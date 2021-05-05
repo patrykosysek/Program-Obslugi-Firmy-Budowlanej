@@ -41,11 +41,11 @@ public class Object extends ID {
     private List<Images> zdjecia = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "przedmiot", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "object", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Rating> ratings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "przedmiot", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "object", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<CategoryObject> categoryObjects = new ArrayList<>();
 
