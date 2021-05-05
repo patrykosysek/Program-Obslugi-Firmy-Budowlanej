@@ -1,11 +1,9 @@
 package pl.mirbudpol.sklepbudowlany.services;
 
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mirbudpol.sklepbudowlany.DTO.AdressDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
 import pl.mirbudpol.sklepbudowlany.entities.Client;

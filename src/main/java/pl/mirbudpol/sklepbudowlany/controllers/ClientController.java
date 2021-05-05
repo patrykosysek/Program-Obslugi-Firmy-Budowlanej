@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.mirbudpol.sklepbudowlany.DTO.AdressDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
 import pl.mirbudpol.sklepbudowlany.services.ClientService;
 

@@ -12,8 +12,11 @@ import java.io.Serializable;
 @Entity(name = "zdjecia")
 public class Images implements Serializable {
 
+    @Column(nullable = false)
+    private String ref;
+
     @ManyToOne
     @Id
     @JoinColumn(name = "przedmioty_id",nullable = false)
-    private Object przedmiot;
+    private Thing przedmiot;
 }

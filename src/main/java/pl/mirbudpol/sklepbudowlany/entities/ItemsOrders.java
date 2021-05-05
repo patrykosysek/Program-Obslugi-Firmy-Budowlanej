@@ -25,7 +25,7 @@ public class ItemsOrders extends ID {
 
     @ManyToOne
     @JoinColumn(name = "przedmiot_id",nullable = false)
-    private Object przedmiot;
+    private Thing przedmiot;
 
 
 

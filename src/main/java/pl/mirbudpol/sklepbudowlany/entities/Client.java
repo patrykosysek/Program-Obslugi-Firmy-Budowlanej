@@ -5,10 +5,10 @@ import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
-<<<<<<< HEAD
+
 import java.util.List;
-=======
->>>>>>> origin/PSs_branch
+
+
 
 @Getter
 @Setter
@@ -32,10 +32,8 @@ public class Client extends ID{
     @OneToOne(mappedBy = "client")
     private RegisteredUser zarejestrowanyUzytkownik;
 
-<<<<<<< HEAD
+
     @OneToMany(mappedBy = "klient")
     private List<Order> zamowienia;
 
-=======
->>>>>>> origin/PSs_branch
 }
