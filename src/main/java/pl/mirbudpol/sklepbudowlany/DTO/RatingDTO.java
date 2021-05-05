@@ -17,7 +17,7 @@ public class RatingDTO {
 
     @NotBlank
     @Size(min = 2, max = 20)
-    private String ocena;
+    private Integer ocena;
 
     @NotBlank
     @Size(min = 2, max = 20)
