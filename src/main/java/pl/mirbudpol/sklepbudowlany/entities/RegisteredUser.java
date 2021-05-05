@@ -5,6 +5,8 @@ import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,5 +33,9 @@ public class RegisteredUser extends ID {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "klient_id", referencedColumnName = "id")
     private Client client;
+
+    @OneToMany(mappedBy = "object", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Rating> ratings  = new ArrayList<>();
 
 }

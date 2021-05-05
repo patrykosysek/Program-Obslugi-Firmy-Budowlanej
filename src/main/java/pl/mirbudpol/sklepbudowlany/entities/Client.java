@@ -4,8 +4,6 @@ import lombok.*;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
