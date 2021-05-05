@@ -11,4 +11,5 @@ public interface ThingRepository extends CrudRepository<Thing, Long>, PagingAndS
 
     Optional<Thing> findById(Long id);
     List<Thing> findAllByCenaSprzedazy(Float cenaSprzedazy);
+    List<Thing> findAll();
 }

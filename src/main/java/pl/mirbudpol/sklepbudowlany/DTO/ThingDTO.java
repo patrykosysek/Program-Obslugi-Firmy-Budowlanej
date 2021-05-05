@@ -25,14 +25,22 @@ public class ThingDTO {
     private Boolean czyArchiwalny;
 
     private List<String> kategoriaId;
+    private List<String> zdjecia;
+    private Float ocena;
+
 
     public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
                     Float cenaSprzedazy, Boolean czyArchiwalny,List<String> kategoriaId){this
-            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId);}
+            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,null,null);}
+
+    public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
+                    Float cenaSprzedazy, Boolean czyArchiwalny,List<String> kategoriaId,List<String> zdjecia){this
+            (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId,zdjecia,null);}
+
 
     public ThingDTO(Thing thing)
     {
-        this(thing.getId(),thing.getNazwa(),thing.getOpis(),thing.getCenaZakupu(),thing.getIloscNaMagazynie(),thing.getCenaSprzedazy(),thing.getCzyArchiwalny(),null);
+        this(thing.getId(),thing.getNazwa(),thing.getOpis(),thing.getCenaZakupu(),thing.getIloscNaMagazynie(),thing.getCenaSprzedazy(),thing.getCzyArchiwalny(),null,null,null);
 
     }
 

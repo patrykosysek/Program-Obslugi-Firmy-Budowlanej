@@ -47,7 +47,8 @@ public class Thing extends ID {
     @OneToMany(mappedBy = "przedmiot")
     private List<ItemsOrders> przedmiotyZamowienia = new ArrayList<>();
 
-    @OneToMany(mappedBy = "przedmiot")
+    @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<Images> zdjecia = new ArrayList<>();
 
 

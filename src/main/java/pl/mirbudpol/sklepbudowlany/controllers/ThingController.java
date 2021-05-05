@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.mirbudpol.sklepbudowlany.DTO.ThingDTO;
+import pl.mirbudpol.sklepbudowlany.DTO.ThingDTOpage1;
 import pl.mirbudpol.sklepbudowlany.services.ThingService;
 
 import java.util.List;
@@ -21,15 +22,22 @@ public class ThingController {
 
     @PostMapping(path = "/dodaj")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addClientWithAdress(@Validated @RequestBody ThingDTO dto){
+    public void addObject(@Validated @RequestBody ThingDTO dto){
         thingService.creatThing(dto);}
+
+    @PostMapping(path = "/dodajzImg")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addObjectWithImages(@Validated @RequestBody ThingDTO dto){
+        thingService.creatThingWithImg(dto);}
+
 
 
     @GetMapping(path = "/polecane")
     @ResponseStatus(HttpStatus.OK)
-    public List<ThingDTO> getRecommendedThings(){
+    public List<ThingDTOpage1> getRecommendedThings(){
         return thingService.recommendedThings();
     }
+
 
 
 
