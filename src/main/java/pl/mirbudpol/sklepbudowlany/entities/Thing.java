@@ -9,6 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +42,14 @@ public class Thing extends ID {
     private Boolean czyArchiwalny;
 
 
+
+
     @OneToMany(mappedBy = "przedmiot")
     private List<ItemsOrders> przedmiotyZamowienia = new ArrayList<>();
 
     @OneToMany(mappedBy = "przedmiot")
     private List<Images> zdjecia = new ArrayList<>();
+
 
 
     @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
@@ -51,7 +58,7 @@ public class Thing extends ID {
 
     @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private List<CategoryObject> categoryObjects  = new ArrayList<>();
+    private List<CategoryObject> categoryObjects = new ArrayList<>();
 
 }
 

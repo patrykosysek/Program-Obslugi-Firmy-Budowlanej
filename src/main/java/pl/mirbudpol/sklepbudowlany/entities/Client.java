@@ -5,9 +5,8 @@ import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
-
+import java.util.ArrayList;
 import java.util.List;
-
 
 
 @Getter
@@ -34,6 +33,6 @@ public class Client extends ID{
 
 
     @OneToMany(mappedBy = "klient")
-    private List<Order> zamowienia;
+    private List<Order> zamowienia = new ArrayList<>();
 
 }

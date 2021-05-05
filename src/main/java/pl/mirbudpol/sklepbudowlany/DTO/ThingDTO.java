@@ -24,10 +24,10 @@ public class ThingDTO {
     private Float cenaSprzedazy;
     private Boolean czyArchiwalny;
 
-    private List<Long> kategoriaId;
+    private List<String> kategoriaId;
 
     public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
-                    Float cenaSprzedazy, Boolean czyArchiwalny,List<Long> kategoriaId){this
+                    Float cenaSprzedazy, Boolean czyArchiwalny,List<String> kategoriaId){this
             (null,nazwa,opis,cenaZakupu,iloscNaMagazynie,cenaSprzedazy,czyArchiwalny,kategoriaId);}
 
     public ThingDTO(Thing thing)
