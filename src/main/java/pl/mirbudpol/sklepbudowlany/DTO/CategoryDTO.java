@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoryDTO {
 
-    private  Long id;
+    private Long id;
 
     @NotBlank
     @Size(min = 2, max = 20)
@@ -23,7 +23,7 @@ public class CategoryDTO {
 
     private List<Long> kategoriaPrzedmiotyId = new ArrayList<>();
 
-    public CategoryDTO(String nazwaKategorii){
-        this( null, nazwaKategorii, null);
+    public CategoryDTO(String nazwaKategorii) {
+        this(null, nazwaKategorii, null);
     }
 }

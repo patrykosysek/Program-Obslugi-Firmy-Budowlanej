@@ -31,6 +31,7 @@ public class Client extends ID{
     @OneToOne(mappedBy = "client")
     private RegisteredUser zarejestrowanyUzytkownik;
 
+
     @OneToMany(mappedBy = "klient")
     private List<Order> zamowienia = new ArrayList<>();
 

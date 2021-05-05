@@ -19,7 +19,7 @@ public class Rating extends ID{
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "klienci_idKlienta", nullable = false)
-    private Object object;
+    private Thing thing;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "przedmioty_idPrzedmiotu", nullable = false)

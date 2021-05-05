@@ -2,18 +2,19 @@ package pl.mirbudpol.sklepbudowlany.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Setter
 @Getter
-@IdClass(Images.class)
 @Entity(name = "zdjecia")
-public class Images implements Serializable {
+public class Images extends ID {
 
-    @ManyToOne
-    @Id
+    @Column(nullable = false)
+    private String ref;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "przedmioty_id",nullable = false)
-    private Object przedmiot;
+    private Thing thing;
 }

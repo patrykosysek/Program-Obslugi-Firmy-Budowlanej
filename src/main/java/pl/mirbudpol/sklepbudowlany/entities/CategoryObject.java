@@ -17,5 +17,5 @@ public class CategoryObject extends ID{
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "przedmioty_idrzedmiotu", nullable = false)
-    private Object object;
+    private Thing thing;
 }

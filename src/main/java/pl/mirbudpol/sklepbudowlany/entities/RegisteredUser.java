@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Getter
 @Setter
 @Entity(name = "ZarejestrowaniUzytkownicy")
@@ -35,7 +36,8 @@ public class RegisteredUser extends ID {
     private Client client;
 
 
-    @OneToMany(mappedBy = "object", fetch = FetchType.LAZY,
+
+    @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Rating> ratings  = new ArrayList<>();
 
