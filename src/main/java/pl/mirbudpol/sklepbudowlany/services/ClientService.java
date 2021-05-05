@@ -29,7 +29,7 @@ public class ClientService {
         client.setEmail(dto.getEmail());
 
         final Adress adress = new Adress();
-        adress.setClient(client);
+        adress.setKlient(client);
         adress.setKraj(dto.getAdres().getKraj());
         adress.setMiejscowosc(dto.getAdres().getMiejscowosc());
         adress.setKodPocztowy(dto.getAdres().getKodPocztowy());

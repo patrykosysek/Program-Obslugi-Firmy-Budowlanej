@@ -1,5 +1,6 @@
 package pl.mirbudpol.sklepbudowlany.additionalClasses;
 
+
 import lombok.Getter;
 import lombok.Setter;
 

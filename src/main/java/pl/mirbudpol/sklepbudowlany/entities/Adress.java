@@ -26,6 +26,6 @@ public class Adress {
     @OneToOne
     @MapsId
     @JoinColumn(name = "klient_id")
-    private Client client;
+    private Client klient;
 
 }
