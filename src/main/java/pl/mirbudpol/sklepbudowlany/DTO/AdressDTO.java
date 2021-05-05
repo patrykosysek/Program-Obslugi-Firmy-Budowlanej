@@ -34,5 +34,4 @@ public class AdressDTO {
         this(null,kraj,kodPocztowy,miejscowosc,ulicaNrDomu);
     }
 
-
 }

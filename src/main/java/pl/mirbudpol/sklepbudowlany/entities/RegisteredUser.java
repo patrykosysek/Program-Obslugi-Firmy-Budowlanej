@@ -5,6 +5,11 @@ import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> origin/PSs_branch
 
 @Getter
 @Setter
@@ -32,4 +37,12 @@ public class RegisteredUser extends ID {
     @JoinColumn(name = "klient_id", referencedColumnName = "id")
     private Client client;
 
+<<<<<<< HEAD
 }
+=======
+    @OneToMany(mappedBy = "object", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Rating> ratings  = new ArrayList<>();
+
+}
+>>>>>>> origin/PSs_branch
