@@ -11,8 +11,6 @@ import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 import pl.mirbudpol.sklepbudowlany.repositories.RatingRepository;
 import pl.mirbudpol.sklepbudowlany.repositories.ThingRepository;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service

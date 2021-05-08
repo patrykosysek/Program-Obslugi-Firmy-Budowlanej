@@ -25,14 +25,16 @@ public class Client extends ID{
     private String email;
 
     @OneToOne(mappedBy = "klient",cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     private Adress adres;
 
-    @OneToOne(mappedBy = "client")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private RegisteredUser zarejestrowanyUzytkownik;
-
 
     @OneToMany(mappedBy = "klient")
     private List<Order> zamowienia = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
+    private List<Rating> oceny = new ArrayList<>();
+
 
 }

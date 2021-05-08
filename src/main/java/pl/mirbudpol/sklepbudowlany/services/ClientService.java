@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
+import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
 import pl.mirbudpol.sklepbudowlany.entities.Client;
+import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
 import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 
 
@@ -48,5 +50,37 @@ public class ClientService {
 
         return clientRepository.save(client);
     }
+
+    @Transactional public Client creatRegisteredClient(RegisteredClientDTO dto){
+
+        Client klient = new Client();
+        klient.setImie(dto.getImie());
+        klient.setEmail(dto.getEmail());
+        klient.setNazwisko(dto.getNazwisko());
+
+        Adress adres = new Adress();
+        adres.setMiejscowosc(dto.getMiejscowosc());
+        adres.setKraj(dto.getKraj());
+        adres.setKodPocztowy(dto.getKodPocztowy());
+        adres.setUlicaNrDomu(dto.getUlicaNrDomu());
+        adres.setKlient(klient);
+
+
+        RegisteredUser user = new RegisteredUser();
+        user.setHaslo(dto.getHaslo());
+        user.setCzyAktywne(true);
+        user.setTypUzytkownika(3);
+        user.setLogin(dto.getLogin());
+        user.setClient(klient);
+
+        klient.setAdres(adres);
+        klient.setZarejestrowanyUzytkownik(user);
+
+
+
+       return clientRepository.save(klient);
+
+    }
+
 
 }
