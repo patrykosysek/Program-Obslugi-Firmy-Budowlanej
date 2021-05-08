@@ -5,11 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
+import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
 import pl.mirbudpol.sklepbudowlany.entities.Client;
+import pl.mirbudpol.sklepbudowlany.entities.Rating;
 import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
 import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -18,6 +24,7 @@ import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+
 
 
     @Transactional
@@ -80,6 +87,21 @@ public class ClientService {
 
        return clientRepository.save(klient);
 
+    }
+
+
+    public List<RatingDTO> getClientRatings(Long id){
+
+        Optional<Client> client = clientRepository.findById(id);
+        List<RatingDTO> ratingsDTO = new ArrayList<>();
+
+        for(Rating rating: client.orElse(null).getOceny()){
+
+            RatingDTO ratingDTO = new RatingDTO(rating.getId(),rating.getOcena(),rating.getKomentarz(),rating.getThing().getId(),rating.getClient().getId());
+            ratingsDTO.add(ratingDTO);
+        }
+
+        return ratingsDTO;
     }
 
 
