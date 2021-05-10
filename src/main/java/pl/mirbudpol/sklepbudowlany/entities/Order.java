@@ -26,7 +26,7 @@ public class Order extends ID {
     @JoinColumn(name = "klient_id",nullable = false)
     private Client klient;
 
-    @OneToMany(mappedBy = "zamowienie")
+    @OneToMany(mappedBy = "zamowienie",cascade = CascadeType.ALL)
     private List<ItemsOrders> przedmiotyZamowienia;
 
 
