@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
-import pl.mirbudpol.sklepbudowlany.entities.Rating;
 import pl.mirbudpol.sklepbudowlany.services.ClientService;
 
 import java.util.List;
@@ -20,9 +19,9 @@ public class ClientController {
 
 private final ClientService clientService;
 
-@PostMapping(path = "/addWithAdress")
-@ResponseStatus(HttpStatus.CREATED)
-public void addClientWithAdress(@Validated @RequestBody ClientDTO dto){clientService.createClientWithAdress(dto);}
+    @PostMapping(path = "/addWithAdress")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addClientWithAdress(@Validated @RequestBody ClientDTO dto){clientService.createClientWithAdress(dto);}
 
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)

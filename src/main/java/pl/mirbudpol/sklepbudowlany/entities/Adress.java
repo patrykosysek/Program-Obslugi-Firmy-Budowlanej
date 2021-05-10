@@ -3,6 +3,7 @@ package pl.mirbudpol.sklepbudowlany.entities;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
+import pl.mirbudpol.sklepbudowlany.enums.Country;
 
 import javax.persistence.*;
 
@@ -13,7 +14,7 @@ public class Adress extends ID {
 
 
     @Column(nullable = false)
-    private String kraj;
+    private Country kraj;
     @Column(nullable = false)
     private String kodPocztowy;
     @Column(nullable = false)

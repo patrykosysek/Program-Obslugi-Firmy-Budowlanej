@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.mirbudpol.sklepbudowlany.enums.Country;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,7 +27,7 @@ private String nazwisko;
 @Email
 private String email;
 @NotBlank
-private String kraj;
+private Country kraj;
 @NotBlank
 private String kodPocztowy;
 @Size(min = 3,max = 20)
@@ -39,7 +40,7 @@ private String login;
 @Size(min = 5,max = 20)
 private String haslo;
 
-public RegisteredClientDTO (String imie,String nazwisko,String email,String kraj,String kodPocztowy, String miejscowosc,String ulicaNrDomu,String login,String haslo){
+public RegisteredClientDTO (String imie,String nazwisko,String email,Country kraj,String kodPocztowy, String miejscowosc,String ulicaNrDomu,String login,String haslo){
     this(null,imie,nazwisko,email,kraj,kodPocztowy,miejscowosc,ulicaNrDomu,login,haslo);
 }
 

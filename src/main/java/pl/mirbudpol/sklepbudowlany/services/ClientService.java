@@ -13,6 +13,7 @@ import pl.mirbudpol.sklepbudowlany.entities.Rating;
 import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
 import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 
+import java.lang.module.ResolutionException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -95,8 +96,7 @@ public class ClientService {
         Optional<Client> client = clientRepository.findById(id);
         List<RatingDTO> ratingsDTO = new ArrayList<>();
 
-        for(Rating rating: client.orElse(null).getOceny()){
-
+        for(Rating rating: client.orElseThrow(()-> new ResolutionException("Klient o id " + id + " nie istnieje")).getOceny()){
             RatingDTO ratingDTO = new RatingDTO(rating.getId(),rating.getOcena(),rating.getKomentarz(),rating.getThing().getId(),rating.getClient().getId());
             ratingsDTO.add(ratingDTO);
         }
