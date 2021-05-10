@@ -14,6 +14,7 @@ public class Adress extends ID {
 
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Country kraj;
     @Column(nullable = false)
     private String kodPocztowy;
