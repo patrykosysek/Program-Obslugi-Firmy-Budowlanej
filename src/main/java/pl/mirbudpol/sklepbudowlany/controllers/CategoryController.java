@@ -16,8 +16,9 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping(path = "/add")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addRegisteredUser(@Validated @RequestBody CategoryDTO dto){
-        categoryService.createCategory(dto);}
+    public void addRegisteredUser(@Validated @RequestBody CategoryDTO dto) {
+        categoryService.createCategory(dto);
+    }
 }

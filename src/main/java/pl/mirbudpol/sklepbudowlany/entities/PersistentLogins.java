@@ -9,7 +9,7 @@ import java.security.Timestamp;
 
 @Getter
 @Setter
-@Entity(name = "persistentLogins")
+@Entity(name = "persistent_logins")
 public class PersistentLogins {
 
     @Id

@@ -14,10 +14,8 @@ import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 
-import java.lang.module.ResolutionException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -27,7 +25,9 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
-
+    public Client findById(Long id) {
+        return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + id + " nie istnieje"));
+    }
 
     @Transactional
     public Client createClientWithAdress(ClientDTO dto) {
@@ -60,7 +60,8 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    @Transactional public Client creatRegisteredClient(RegisteredClientDTO dto){
+    @Transactional
+    public Client creatRegisteredClient(RegisteredClientDTO dto) {
 
         Client klient = new Client();
         klient.setImie(dto.getImie());
@@ -86,19 +87,18 @@ public class ClientService {
         klient.setZarejestrowanyUzytkownik(user);
 
 
-
-       return clientRepository.save(klient);
+        return clientRepository.save(klient);
 
     }
 
 
-    public List<RatingDTO> getClientRatings(Long id){
+    public List<RatingDTO> getClientRatings(Long id) {
 
-        Optional<Client> client = clientRepository.findById(id);
+        Client client = this.findById(id);
         List<RatingDTO> ratingsDTO = new ArrayList<>();
 
-        for(Rating rating: client.orElseThrow(()-> new ResourceNotFoundException("Klient o id " + id + " nie istnieje")).getOceny()){
-            RatingDTO ratingDTO = new RatingDTO(rating.getId(),rating.getOcena(),rating.getKomentarz(),rating.getThing().getId(),rating.getClient().getId());
+        for (Rating rating : client.getOceny()) {
+            RatingDTO ratingDTO = new RatingDTO(rating.getId(), rating.getOcena(), rating.getKomentarz(), rating.getThing().getId(), rating.getClient().getId());
             ratingsDTO.add(ratingDTO);
         }
 

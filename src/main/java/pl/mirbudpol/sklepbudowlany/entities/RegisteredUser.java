@@ -22,10 +22,10 @@ public class RegisteredUser extends ID {
     @Column(nullable = false)
     private String haslo;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "typ_uzytkownika")
     private int typUzytkownika;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "czy_aktywne")
     private boolean czyAktywne;
 
     @OneToOne

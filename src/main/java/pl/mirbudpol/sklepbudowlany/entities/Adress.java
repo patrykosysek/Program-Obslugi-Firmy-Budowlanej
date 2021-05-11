@@ -9,18 +9,18 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity(name = "AdresyZamieszkania")
+@Entity(name = "adresy_zamieszkania")
 public class Adress extends ID {
 
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Country kraj;
-    @Column(nullable = false)
+    @Column(nullable = false,name = "kod_pocztowy")
     private String kodPocztowy;
     @Column(nullable = false)
     private String miejscowosc;
-    @Column(nullable = false)
+    @Column(nullable = false,name = "ulica_nr_domu")
     private String ulicaNrDomu;
 
     @OneToOne

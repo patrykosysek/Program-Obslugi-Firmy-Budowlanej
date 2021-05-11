@@ -16,9 +16,10 @@ public class RatingController {
 
     private final RatingService ratingService;
 
-    @PostMapping(path = "/add")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addRating(@Validated @RequestBody RatingDTO dto){
-        ratingService.createRating(dto);}
+    public void addRating(@Validated @RequestBody RatingDTO dto) {
+        ratingService.createRating(dto);
+    }
 
 }
