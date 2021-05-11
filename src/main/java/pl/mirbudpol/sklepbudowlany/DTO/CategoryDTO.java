@@ -28,4 +28,8 @@ public class CategoryDTO {
     public CategoryDTO(String nazwaKategorii) {
         this(null, nazwaKategorii, null);
     }
+
+    public CategoryDTO(Long id) {
+        this(id, null, null);
+    }
 }
