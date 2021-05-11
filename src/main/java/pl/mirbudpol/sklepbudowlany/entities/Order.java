@@ -13,20 +13,20 @@ import java.util.List;
 @Entity(name = "zamowienia")
 public class Order extends ID {
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "data_zamowienia")
     private SimpleDateFormat dataZamowienia = new SimpleDateFormat("MM-dd-yyyy");
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "czy_zrealizowane")
     private Boolean czyZrealizowane;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "wartosc_zamowienia")
     private Float wartoscZamowienia;
 
     @ManyToOne
     @JoinColumn(name = "klient_id",nullable = false)
     private Client klient;
 
-    @OneToMany(mappedBy = "zamowienie")
+    @OneToMany(mappedBy = "zamowienie",cascade = CascadeType.ALL)
     private List<ItemsOrders> przedmiotyZamowienia;
 
 

@@ -18,14 +18,14 @@ public class ClientDTO {
     private Long id;
 
     @NotBlank
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 20,message = "Imię musi zawierać od 2 do 20 znaków")
    private String imie;
 
     @NotBlank
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 20,message = "Nazwisko musi zawierać od 2 do 20 znaków")
     private String nazwisko;
 
-    @Email(message = "email should be valid")
+    @Email(message = "Email jest nieprawidłowy")
     private String email;
 
     private AdressDTO adres;

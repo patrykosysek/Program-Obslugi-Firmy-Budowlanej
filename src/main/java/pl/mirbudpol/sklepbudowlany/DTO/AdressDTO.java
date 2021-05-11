@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.mirbudpol.sklepbudowlany.enums.Country;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -17,10 +19,11 @@ public class AdressDTO {
 
     private Long id;
 
-    @NotBlank
-    private String kraj;
+    @NotNull
+    private Country kraj;
 
     @NotBlank
+    @Size(min = 6,max = 6)
     private String kodPocztowy;
 
     @NotBlank
@@ -30,7 +33,7 @@ public class AdressDTO {
     private String ulicaNrDomu;
 
 
-    public AdressDTO(String kraj,String kodPocztowy,String miejscowosc,String ulicaNrDomu){
+    public AdressDTO(Country kraj,String kodPocztowy,String miejscowosc,String ulicaNrDomu){
         this(null,kraj,kodPocztowy,miejscowosc,ulicaNrDomu);
     }
 

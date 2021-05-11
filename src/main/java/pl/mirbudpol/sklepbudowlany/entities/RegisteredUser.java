@@ -4,20 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 
 @Getter
 @Setter
-@Entity(name = "ZarejestrowaniUzytkownicy")
+@Entity(name = "zarejestrowani_uzytkownicy")
 public class RegisteredUser extends ID {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idUzytkownika")
-    private Long id;
 
     @Column(unique = true, nullable = false)
     private String login;
@@ -25,21 +22,15 @@ public class RegisteredUser extends ID {
     @Column(nullable = false)
     private String haslo;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "typ_uzytkownika")
     private int typUzytkownika;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "czy_aktywne")
     private boolean czyAktywne;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "klient_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "klient_id",referencedColumnName = "id")
     private Client client;
-
-
-
-    @OneToMany(mappedBy = "thing", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private List<Rating> ratings  = new ArrayList<>();
 
 }
 

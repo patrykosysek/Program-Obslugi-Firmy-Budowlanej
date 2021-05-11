@@ -2,30 +2,29 @@ package pl.mirbudpol.sklepbudowlany.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
+import pl.mirbudpol.sklepbudowlany.enums.Country;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity(name = "AdresyZamieszkania")
-public class Adress {
+@Entity(name = "adresy_zamieszkania")
+public class Adress extends ID {
 
-    @Id
-    @Column(name = "klient_id")
-    private Long id;
 
     @Column(nullable = false)
-    private String kraj;
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Country kraj;
+    @Column(nullable = false,name = "kod_pocztowy")
     private String kodPocztowy;
     @Column(nullable = false)
     private String miejscowosc;
-    @Column(nullable = false)
+    @Column(nullable = false,name = "ulica_nr_domu")
     private String ulicaNrDomu;
 
     @OneToOne
-    @MapsId
-    @JoinColumn(name = "klient_id")
+    @JoinColumn(name = "klient_id",referencedColumnName = "id")
     private Client klient;
 
 }

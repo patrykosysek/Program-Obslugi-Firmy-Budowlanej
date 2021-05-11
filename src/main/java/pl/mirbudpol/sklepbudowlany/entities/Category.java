@@ -12,10 +12,9 @@ import java.util.List;
 @Entity(name = "kategoria")
 public class Category extends ID{
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<CategoryObject> categoryObjects  = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "nazwa_kategorii")
     private String nazwaKategorii;
 }

@@ -5,7 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
+import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
+import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.services.ClientService;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Validated
@@ -15,12 +19,22 @@ public class ClientController {
 
 private final ClientService clientService;
 
-@PostMapping(path = "/addWithAdress")
-@ResponseStatus(HttpStatus.CREATED)
-public void addClientWithAdress(@Validated @RequestBody ClientDTO dto){clientService.createClientWithAdress(dto);}
+    @PostMapping(path = "/addWithAdress")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addClientWithAdress(@Validated @RequestBody ClientDTO dto){clientService.createClientWithAdress(dto);}
 
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     public void addClient(@Validated @RequestBody ClientDTO dto){clientService.createClient(dto);}
+
+    @PostMapping(path = "/registration")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerClient(@Validated @RequestBody RegisteredClientDTO dto){clientService.creatRegisteredClient(dto);}
+
+    @GetMapping(path = "/ratings/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<RatingDTO> getClientRatings(@PathVariable Long id){
+        return clientService.getClientRatings(id);
+    }
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity(name = "Oceny")
+@Entity(name = "oceny")
 public class Rating extends ID{
 
     @Column(nullable = false)
@@ -18,10 +18,11 @@ public class Rating extends ID{
     private String komentarz;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "klienci_idKlienta", nullable = false)
+    @JoinColumn(name = "przedmiot_id", nullable = false)
     private Thing thing;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "przedmioty_idPrzedmiotu", nullable = false)
+    @JoinColumn(name = "klient_id", nullable = false)
     private Client client;
+
 }
