@@ -8,13 +8,13 @@ import javax.persistence.*;
 
 @Setter
 @Getter
-@Entity(name = "przedmiotyZamowienia")
+@Entity(name = "przedmioty_zamowienia")
 public class ItemsOrders extends ID {
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "ilosc_przemdmiotu")
     private Integer iloscPrzedmiotu;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "cena_sprzedazy")
     private Float cenaSprzedazy;
 
 
