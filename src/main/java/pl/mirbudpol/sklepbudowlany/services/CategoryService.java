@@ -32,6 +32,14 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    public Category findById(Long id){
+        return categoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Kategoria o id " + id +" nie istnieje"));
+    }
+
+    public Category findByNazwaKategorii(String name){
+        return categoryRepository.findByNazwaKategorii(name).orElseThrow(()-> new ResourceNotFoundException("Kategoria o nazwie " + name +" nie istnieje"));
+    }
+
     @Transactional
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
@@ -53,8 +61,7 @@ public class CategoryService {
 
     @Transactional
     public void updateCategory(CategoryDTO dto) {
-        Optional <Category> category = categoryRepository.findById(dto.getId());
+        Category category = findById(dto.getId());
+        category.setNazwaKategorii(dto.getNazwaKategorii());
     }
-
-
 }
