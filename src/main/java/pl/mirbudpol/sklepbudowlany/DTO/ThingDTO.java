@@ -12,6 +12,7 @@ import pl.mirbudpol.sklepbudowlany.entities.Thing;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,9 +36,10 @@ public class ThingDTO {
     @NotNull
     private Boolean czyArchiwalny;
 
-    private List<String> kategoriaId;
-    private List<String> zdjecia;
-    private List<String> materialyElektroniczne;
+    private List<String> kategoriaId = new ArrayList<>();
+    private List<String> zdjecia = new ArrayList<>();
+    private List<String> materialyElektroniczne = new ArrayList<>();
+
 
 
     public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
@@ -46,19 +48,6 @@ public class ThingDTO {
                 (null, nazwa, opis, cenaZakupu, iloscNaMagazynie, cenaSprzedazy, czyArchiwalny, kategoriaId, null, null);
     }
 
-    public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
-                    Float cenaSprzedazy, Boolean czyArchiwalny, List<String> kategoriaId, List<String> zdjecia) {
-        this
-                (null, nazwa, opis, cenaZakupu, iloscNaMagazynie, cenaSprzedazy, czyArchiwalny, kategoriaId, zdjecia, null);
-    }
-
-    public ThingDTO(String nazwa, String opis, Float cenaZakupu, Integer iloscNaMagazynie,
-                    Float cenaSprzedazy, Boolean czyArchiwalny, List<String> kategoriaId, List<String> zdjecia, List<String> materialyElektroniczne) {
-        this
-                (null, nazwa, opis, cenaZakupu, iloscNaMagazynie, cenaSprzedazy, czyArchiwalny, kategoriaId, zdjecia, materialyElektroniczne);
-    }
-
-
     public ThingDTO(Thing thing) {
         this.id = thing.getId();
         this.nazwa = thing.getNazwa();
@@ -66,6 +55,7 @@ public class ThingDTO {
         this.cenaZakupu = thing.getCenaZakupu();
         this.cenaSprzedazy = thing.getCenaSprzedazy();
         this.czyArchiwalny = thing.getCzyArchiwalny();
+        this.iloscNaMagazynie = thing.getIloscNaMagazynie();
 
         for (CategoryObject categoryObject : thing.getCategoryObjects()) {
             this.kategoriaId.add(categoryObject.getCategory().getNazwaKategorii());

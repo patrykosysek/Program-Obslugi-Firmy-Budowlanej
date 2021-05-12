@@ -4,10 +4,7 @@ package pl.mirbudpol.sklepbudowlany.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mirbudpol.sklepbudowlany.DTO.ImageDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ItemCategoryDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ThingDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ThingDTOpage1;
+import pl.mirbudpol.sklepbudowlany.DTO.*;
 import pl.mirbudpol.sklepbudowlany.entities.*;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 import pl.mirbudpol.sklepbudowlany.repositories.*;
@@ -87,9 +84,15 @@ public class ThingService {
         thingRepository.deleteById(id);
     }
 
-    public ThingDTO getThing(Long id) {
-        ThingDTO dto = new ThingDTO(this.findById(id));
+    public ThingDTOdetails getThing(Long id) {
+
+        ThingDTOdetails dto = new ThingDTOdetails(this.findById(id));
+
         return dto;
+    }
+
+    public Integer getQuantity(Long id){
+        return this.findById(id).getIloscNaMagazynie();
     }
 
     public List<ThingDTOpage1> recommendedThings() {

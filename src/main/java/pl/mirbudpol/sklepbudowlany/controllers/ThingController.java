@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.mirbudpol.sklepbudowlany.DTO.ImageDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ItemCategoryDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ThingDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ThingDTOpage1;
+import pl.mirbudpol.sklepbudowlany.DTO.*;
 import pl.mirbudpol.sklepbudowlany.services.ThingService;
 
 import java.util.List;
@@ -39,6 +36,18 @@ public class ThingController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteObject(@PathVariable Long id) {
         thingService.deleteThing(id);
+    }
+
+    @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ThingDTOdetails getObject(@PathVariable Long id) {
+        return thingService.getThing(id);
+    }
+
+    @GetMapping(path = "/quantity/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Integer getQuantity(@PathVariable Long id) {
+        return thingService.getQuantity(id);
     }
 
 
@@ -85,4 +94,6 @@ public class ThingController {
     public void deleteElectronical(@Validated @RequestBody ImageDTO dto, @PathVariable Long id) {
         thingService.deleteElectronicalMaterial(dto, id);
     }
+
+
 }

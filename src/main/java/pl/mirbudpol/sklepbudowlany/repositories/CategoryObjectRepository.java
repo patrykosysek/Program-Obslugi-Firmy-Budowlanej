@@ -3,6 +3,7 @@ package pl.mirbudpol.sklepbudowlany.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.mirbudpol.sklepbudowlany.entities.CategoryObject;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryObjectRepository extends JpaRepository<CategoryObject, Long> {
