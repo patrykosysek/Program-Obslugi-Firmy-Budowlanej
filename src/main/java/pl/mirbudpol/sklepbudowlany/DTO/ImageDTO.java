@@ -5,16 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemCategoryDTO {
+public class ImageDTO {
 
+    Long id;
 
-@NotNull
-private String categoryName;
+    @NotBlank
+    String ref;
+
+    public ImageDTO(String ref) {
+        this(null, ref);
+    }
 
 }

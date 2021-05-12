@@ -1,11 +1,15 @@
 package pl.mirbudpol.sklepbudowlany.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @Entity(name = "zdjecia")
