@@ -51,6 +51,18 @@ public class ThingController {
     }
 
 
+    @GetMapping(path = "/category")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ThingDTOpage1> getItemsFromCategory(@RequestBody ItemCategoryDTO dto){
+        return thingService.getItemsFromCategory(dto.getCategoryName());
+    }
+
+    @GetMapping(path = "/name")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ThingDTOpage1> getItemsByName(@RequestBody ItemNameDTO dto){
+        return thingService.getItemsByName(dto.getItemName());
+    }
+
     @ApiOperation("Zwraca 6 przedmiotów o najlepszych ocenach")
     @GetMapping(path = "/recommended")
     @ResponseStatus(HttpStatus.OK)

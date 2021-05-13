@@ -12,6 +12,8 @@ import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 import pl.mirbudpol.sklepbudowlany.repositories.RatingRepository;
 import pl.mirbudpol.sklepbudowlany.repositories.ThingRepository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -26,6 +28,11 @@ public class RatingService {
     public Rating findById(Long id) {
         return ratingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Rating o id " + id + " nie istnieje"));
     }
+
+    public List<Rating> findAllByThingId(Long id) {
+        return ratingRepository.findAllByThingId(id).orElseThrow(() -> new ResourceNotFoundException("Przedmiot nie posiada ocen"));
+    }
+
 
     @Transactional
     public Rating createRating(RatingDTO dto) {

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface CategoryObjectRepository extends JpaRepository<CategoryObject, Long> {
 
     Optional<CategoryObject> findByThing_IdAndCategory_Id(Long ThingId, Long CategoryId);
+    Optional<List<CategoryObject>> findAllByCategory_Id(Long id);
 }

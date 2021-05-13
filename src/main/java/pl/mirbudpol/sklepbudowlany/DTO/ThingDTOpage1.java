@@ -24,7 +24,12 @@ public class ThingDTOpage1 {
 
 
     public ThingDTOpage1(Thing thing, Float sr) {
-        this(thing.getId(), thing.getNazwa(), thing.getIloscNaMagazynie(), thing.getCenaSprzedazy(), thing.getZdjecia().get(0).getRef(), sr);
-    }
+        this(thing.getId(), thing.getNazwa(), thing.getIloscNaMagazynie(), thing.getCenaSprzedazy(), null, sr);
 
+        if (thing.getZdjecia().size() != 0)
+            this.zdjecia = thing.getZdjecia().get(0).getRef();
+        else
+            this.zdjecia = "https://www.filtrowanie.com.pl/wp-content/uploads/2017/07/brak-zdjecia.png";
+
+    }
 }

@@ -17,15 +17,38 @@ import java.util.*;
 public class ThingService {
 
     private final ThingRepository thingRepository;
-    private final CategoryRepository categoryRepository;
     private final RatingRepository ratingRepository;
     private final CategoryService categoryService;
     private final CategoryObjectRepository categoryObjectRepository;
     private final ImagesRepository imagesRepository;
     private final ElectronicalMaterialRepository electronicalMaterialRepository;
+    private final CategoryObjectService categoryObjectService;
+
 
     public Thing findById(Long id) {
         return thingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Przedmiot o " + id + " nie istnieje"));
+    }
+
+    public List<Thing> findAllByNazwaContaining(String name) {
+        return thingRepository.findAllByNazwaContaining(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
+    }
+
+    public Float avgRating(Long id) {
+
+        List<Rating> ratings = ratingRepository.findAllByThingId(id).orElseThrow(() -> new ResourceNotFoundException("Przedmiot nie ma ocen"));
+
+        Float ocena = 0f;
+        Integer i = 0;
+        if(ratings.size()!=0) {
+            for (Rating rating : ratings) {
+                ocena += rating.getOcena();
+                i++;
+            }
+            return ocena/i;
+        }
+        else
+            return ocena;
+
     }
 
 
@@ -91,7 +114,7 @@ public class ThingService {
         return dto;
     }
 
-    public Integer getQuantity(Long id){
+    public Integer getQuantity(Long id) {
         return this.findById(id).getIloscNaMagazynie();
     }
 
@@ -105,7 +128,7 @@ public class ThingService {
         for (Thing thing : rekomednowane) {
             Float avg = 0f;
             int i = 0;
-            List<Rating> oceny = ratingRepository.findAllByThingId(thing.getId());
+            List<Rating> oceny = ratingRepository.findAllByThingId(thing.getId()).orElse(new ArrayList<>());
             for (Rating rating : oceny) {
                 avg += rating.getOcena();
                 i++;
@@ -200,5 +223,38 @@ public class ThingService {
         electronicalMaterialRepository.deleteById(electronicMaterial.getId());
     }
 
+    public List<ThingDTOpage1> getItemsFromCategory(String name) {
+
+        Category category = categoryService.findByNazwaKategorii(name);
+        List<CategoryObject> categoryObjects = categoryObjectService.findAllByCategory_Id(category.getId());
+
+        List<ThingDTOpage1> dtos = new ArrayList<>();
+
+        for (CategoryObject object : categoryObjects) {
+            ThingDTOpage1 dto = new ThingDTOpage1(object.getThing(), this.avgRating(object.getThing().getId()));
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    public List<ThingDTOpage1> getItemsByName(String name) {
+
+        List<Thing> things;
+
+        if (name.trim().isEmpty() || name == null) {
+            things = thingRepository.findAll();
+        } else {
+            things = this.findAllByNazwaContaining(name);
+        }
+        List<ThingDTOpage1> dtos = new ArrayList<>();
+
+        for (Thing thing : things) {
+
+            ThingDTOpage1 dto = new ThingDTOpage1(thing, this.avgRating(thing.getId()));
+            dtos.add(dto);
+        }
+        return dtos;
+
+    }
 }
 
