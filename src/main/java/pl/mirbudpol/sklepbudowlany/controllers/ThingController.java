@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@CrossOrigin(origins = "https://mirbud-restapi.herokuapp.com")
 @RequestMapping(path = "/api/item")
 public class ThingController {
 

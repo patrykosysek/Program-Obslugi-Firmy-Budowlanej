@@ -13,9 +13,8 @@ public class CorsConfig {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:3000","http://localhost:8080","http://mirbud.onlinewebshop.net/","https://mirbud-restapi.herokuapp.com/","https://mirbud-restapi.herokuapp.com")
-                        .allowedMethods("PUT", "DELETE","CREATE","PATCH","GET","POST");
+                registry.addMapping("/api/**");
+                
             }
         };
     }
