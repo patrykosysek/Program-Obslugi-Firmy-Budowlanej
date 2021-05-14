@@ -51,7 +51,7 @@ public class ThingController {
     }
 
 
-    @GetMapping(path = "/category/{name}")
+    @GetMapping(path = "/category/{categoryName}")
     @ResponseStatus(HttpStatus.OK)
     public List<ThingDTOpage1> getItemsFromCategory(@PathVariable String categoryName) {
         return thingService.getItemsFromCategory(categoryName);
