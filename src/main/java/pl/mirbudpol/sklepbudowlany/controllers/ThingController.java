@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RestController
+@CrossOrigin(origins = "https://mirbud-restapi.herokuapp.com")
 @RequestMapping(path = "/api/item")
 public class ThingController {
 
@@ -53,13 +54,13 @@ public class ThingController {
 
     @GetMapping(path = "/category")
     @ResponseStatus(HttpStatus.OK)
-    public List<ThingDTOpage1> getItemsFromCategory(@RequestBody ItemCategoryDTO dto){
+    public List<ThingDTOpage1> getItemsFromCategory(@RequestBody ItemCategoryDTO dto) {
         return thingService.getItemsFromCategory(dto.getCategoryName());
     }
 
     @GetMapping(path = "/name")
     @ResponseStatus(HttpStatus.OK)
-    public List<ThingDTOpage1> getItemsByName(@RequestBody ItemNameDTO dto){
+    public List<ThingDTOpage1> getItemsByName(@RequestBody ItemNameDTO dto) {
         return thingService.getItemsByName(dto.getItemName());
     }
 
