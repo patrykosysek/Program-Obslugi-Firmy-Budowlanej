@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface ThingRepository extends CrudRepository<Thing, Long>, PagingAndSortingRepository<Thing, Long> {
 
     Optional<Thing> findById(Long id);
-    List<Thing> findAllByCenaSprzedazy(Float cenaSprzedazy);
-    List<Thing> findAll();
+    List <Thing> findAll();
+    Optional<List<Thing>> findAllByNazwaContaining(String name);
 }

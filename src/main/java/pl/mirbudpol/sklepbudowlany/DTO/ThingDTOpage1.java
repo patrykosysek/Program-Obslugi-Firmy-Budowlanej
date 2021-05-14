@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.mirbudpol.sklepbudowlany.entities.Images;
 import pl.mirbudpol.sklepbudowlany.entities.Thing;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ThingDTOpage1 {
 
-    private  Long id;
+    private Long id;
 
     private String nazwa;
     private Integer iloscNaMagazynie;
@@ -26,9 +23,13 @@ public class ThingDTOpage1 {
     private Float ocena;
 
 
-    public ThingDTOpage1(Thing thing,Float sr)
-    {
-     this(thing.getId(), thing.getNazwa(), thing.getIloscNaMagazynie(), thing.getCenaSprzedazy(),thing.getZdjecia().get(0).getRef(),sr);
-    }
+    public ThingDTOpage1(Thing thing, Float sr) {
+        this(thing.getId(), thing.getNazwa(), thing.getIloscNaMagazynie(), thing.getCenaSprzedazy(), null, sr);
 
+        if (thing.getZdjecia().size() != 0)
+            this.zdjecia = thing.getZdjecia().get(0).getRef();
+        else
+            this.zdjecia = "https://www.filtrowanie.com.pl/wp-content/uploads/2017/07/brak-zdjecia.png";
+
+    }
 }

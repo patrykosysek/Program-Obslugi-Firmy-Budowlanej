@@ -11,7 +11,7 @@ import pl.mirbudpol.sklepbudowlany.services.RatingService;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = "/ratings")
+@RequestMapping(path = "/api/ratings")
 public class RatingController {
 
     private final RatingService ratingService;

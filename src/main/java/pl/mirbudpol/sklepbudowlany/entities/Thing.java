@@ -1,5 +1,6 @@
 package pl.mirbudpol.sklepbudowlany.entities;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,13 +23,13 @@ public class Thing extends ID {
     @Column(nullable = false)
     private String opis;
 
-    @Column(nullable = false,name = "cena_zakupu")
+    @Column(nullable = false, name = "cena_zakupu")
     private Float cenaZakupu;
 
-    @Column(nullable = false,name = "ilosc_na_magazynie")
+    @Column(nullable = false, name = "ilosc_na_magazynie")
     private Integer iloscNaMagazynie;
 
-    @Column(nullable = false,name = "cena_sprzedazy")
+    @Column(nullable = false, name = "cena_sprzedazy")
     private Float cenaSprzedazy;
 
 
@@ -64,5 +65,16 @@ public class Thing extends ID {
         this.cenaSprzedazy = dto.getCenaSprzedazy();
         this.czyArchiwalny = dto.getCzyArchiwalny();
     }
+
+    public void update(ThingDTO dto) {
+        this.nazwa = dto.getNazwa();
+        this.opis = dto.getOpis();
+        this.iloscNaMagazynie = dto.getIloscNaMagazynie();
+        this.cenaSprzedazy = dto.getCenaSprzedazy();
+        this.czyArchiwalny = dto.getCzyArchiwalny();
+
+
+    }
+
 }
 

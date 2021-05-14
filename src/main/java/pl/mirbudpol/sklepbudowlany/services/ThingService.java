@@ -4,14 +4,10 @@ package pl.mirbudpol.sklepbudowlany.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mirbudpol.sklepbudowlany.DTO.ItemCategoryDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ThingDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.ThingDTOpage1;
+import pl.mirbudpol.sklepbudowlany.DTO.*;
 import pl.mirbudpol.sklepbudowlany.entities.*;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
-import pl.mirbudpol.sklepbudowlany.repositories.CategoryRepository;
-import pl.mirbudpol.sklepbudowlany.repositories.RatingRepository;
-import pl.mirbudpol.sklepbudowlany.repositories.ThingRepository;
+import pl.mirbudpol.sklepbudowlany.repositories.*;
 
 import java.util.*;
 
@@ -21,17 +17,45 @@ import java.util.*;
 public class ThingService {
 
     private final ThingRepository thingRepository;
-    private final CategoryRepository categoryRepository;
     private final RatingRepository ratingRepository;
     private final CategoryService categoryService;
+    private final CategoryObjectRepository categoryObjectRepository;
+    private final ImagesRepository imagesRepository;
+    private final ElectronicalMaterialRepository electronicalMaterialRepository;
+    private final CategoryObjectService categoryObjectService;
+
 
     public Thing findById(Long id) {
         return thingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Przedmiot o " + id + " nie istnieje"));
     }
 
+    public List<Thing> findAllByNazwaContaining(String name) {
+        return thingRepository.findAllByNazwaContaining(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
+    }
+
+    public Float avgRating(Long id) {
+
+        List<Rating> ratings = ratingRepository.findAllByThingId(id).orElseThrow(() -> new ResourceNotFoundException("Przedmiot nie ma ocen"));
+
+        Float ocena = 0f;
+        Integer i = 0;
+        if(ratings.size()!=0) {
+            for (Rating rating : ratings) {
+                ocena += rating.getOcena();
+                i++;
+            }
+            return ocena/i;
+        }
+        else
+            return ocena;
+
+    }
+
+
     @Transactional
-    public Thing creatThing(ThingDTO dto) {
+    public Thing createThing(ThingDTO dto) {
         final Thing thing = new Thing(dto);
+
         List<Category> kategorie = new ArrayList<>();
 
         for (String nazwa : dto.getKategoriaId()) {
@@ -48,53 +72,7 @@ public class ThingService {
             przedmiotyKategorie.add(objektKategorii);
         }
 
-        thing.setCategoryObjects(przedmiotyKategorie);
-
-        return thingRepository.save(thing);
-
-    }
-
-    @Transactional
-    public Thing creatThingWithImg(ThingDTO dto) {
-        final Thing thing = new Thing(dto);
-
         List<Images> zdjecia = new ArrayList<>();
-        for (String ref : dto.getZdjecia()) {
-            Images zdjecie = new Images();
-            zdjecie.setRef(ref);
-            zdjecie.setThing(thing);
-            zdjecia.add(zdjecie);
-        }
-
-        List<Category> kategorie = new ArrayList<>();
-
-        for (String nazwa : dto.getKategoriaId()) {
-            Category kategoria = categoryService.findByNazwaKategorii(nazwa);
-            kategorie.add(kategoria);
-        }
-
-        List<CategoryObject> przedmiotyKategorie = new ArrayList<>();
-
-        for (Category kategoria : kategorie) {
-            CategoryObject objektKategorii = new CategoryObject();
-            objektKategorii.setThing(thing);
-            objektKategorii.setCategory(kategoria);
-            przedmiotyKategorie.add(objektKategorii);
-        }
-
-        thing.setCategoryObjects(przedmiotyKategorie);
-        thing.setZdjecia(zdjecia);
-
-        return thingRepository.save(thing);
-    }
-
-
-    @Transactional
-    public Thing creatThingWithImgAndElectronicMaterials(ThingDTO dto) {
-
-        final Thing thing = new Thing(dto);
-        List<Images> zdjecia = new ArrayList<>();
-
         for (String ref : dto.getZdjecia()) {
             Images zdjecie = new Images();
             zdjecie.setRef(ref);
@@ -103,37 +81,42 @@ public class ThingService {
         }
 
         List<ElectronicMaterial> materalyElektroniczne = new ArrayList<>();
-        for (String ref : dto.getZdjecia()) {
+        for (String ref : dto.getMaterialyElektroniczne()) {
             ElectronicMaterial electronicMaterial = new ElectronicMaterial();
             electronicMaterial.setRef(ref);
             electronicMaterial.setThing(thing);
             materalyElektroniczne.add(electronicMaterial);
         }
 
-        List<Category> kategorie = new ArrayList<>();
-
-        for (String nazwa : dto.getKategoriaId()) {
-            Category kategoria = categoryService.findByNazwaKategorii(nazwa);
-            if (kategoria != null)
-                kategorie.add(kategoria);
-        }
-
-        List<CategoryObject> przedmiotyKategorie = new ArrayList<>();
-
-        for (Category kategoria : kategorie) {
-            CategoryObject objektKategorii = new CategoryObject();
-            objektKategorii.setThing(thing);
-            objektKategorii.setCategory(kategoria);
-            przedmiotyKategorie.add(objektKategorii);
-        }
 
         thing.setCategoryObjects(przedmiotyKategorie);
         thing.setZdjecia(zdjecia);
         thing.setMaterialyElektoniczne(materalyElektroniczne);
-
         return thingRepository.save(thing);
     }
 
+    @Transactional
+    public void updateThing(Long id, ThingDTO dto) {
+
+        Thing thing = this.findById(id);
+        thing.update(dto);
+    }
+
+    @Transactional
+    public void deleteThing(Long id) {
+        thingRepository.deleteById(id);
+    }
+
+    public ThingDTOdetails getThing(Long id) {
+
+        ThingDTOdetails dto = new ThingDTOdetails(this.findById(id));
+
+        return dto;
+    }
+
+    public Integer getQuantity(Long id) {
+        return this.findById(id).getIloscNaMagazynie();
+    }
 
     public List<ThingDTOpage1> recommendedThings() {
 
@@ -145,7 +128,7 @@ public class ThingService {
         for (Thing thing : rekomednowane) {
             Float avg = 0f;
             int i = 0;
-            List<Rating> oceny = ratingRepository.findAllByThingId(thing.getId());
+            List<Rating> oceny = ratingRepository.findAllByThingId(thing.getId()).orElse(new ArrayList<>());
             for (Rating rating : oceny) {
                 avg += rating.getOcena();
                 i++;
@@ -168,8 +151,8 @@ public class ThingService {
                 break;
             else {
                 Thing przedmiot = this.findById(entry.getKey());
-                if(przedmiot.getRatings().size()==0)
-                j--;
+                if (przedmiot.getRatings().size() == 0)
+                    j--;
                 else {
                     Float sr = entry.getValue();
                     ThingDTOpage1 przedmiot_rekomendowany = new ThingDTOpage1(przedmiot, sr);
@@ -184,18 +167,94 @@ public class ThingService {
     }
 
     @Transactional
-    public void addCategory(ItemCategoryDTO dto) {
+    public void addCategory(ItemCategoryDTO dto, Long id) {
 
-        Thing thing = this.findById(dto.getItemId());
+        Thing thing = this.findById(id);
         Category category = categoryService.findByNazwaKategorii(dto.getCategoryName());
 
-        CategoryObject categoryObject = new CategoryObject();
-        categoryObject.setCategory(category);
-        categoryObject.setThing(thing);
-
+        CategoryObject categoryObject = new CategoryObject(category, thing);
         thing.getCategoryObjects().add(categoryObject);
+
         thingRepository.save(thing);
     }
 
+    @Transactional
+    public void deleteCategory(ItemCategoryDTO dto, Long id) {
 
+        CategoryObject categoryObject = categoryObjectRepository.findByThing_IdAndCategory_Id(id, categoryService.findByNazwaKategorii(
+                dto.getCategoryName()).getId()).orElseThrow(() -> new ResourceNotFoundException("Nieznaleziono takiego przedmiotu lub kategorii"));
+
+        categoryObjectRepository.deleteById(categoryObject.getId());
+    }
+
+    @Transactional
+    public void addImage(ImageDTO dto, Long id) {
+
+        Thing thing = this.findById(id);
+
+        Images image = new Images(dto.getRef(), thing);
+        thing.getZdjecia().add(image);
+
+        thingRepository.save(thing);
+    }
+
+    @Transactional
+    public void deleteImage(ImageDTO dto, Long id) {
+
+        Images image = imagesRepository.findByRefAndThingId(dto.getRef(), id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego przedmiotu lub zdjęcia"));
+        imagesRepository.deleteById(image.getId());
+    }
+
+    @Transactional
+    public void addElectronicalMaterial(ImageDTO dto, Long id) {
+
+        Thing thing = this.findById(id);
+
+        ElectronicMaterial electronicMaterial = new ElectronicMaterial(dto.getRef(), thing);
+        thing.getMaterialyElektoniczne().add(electronicMaterial);
+
+        thingRepository.save(thing);
+    }
+
+    @Transactional
+    public void deleteElectronicalMaterial(ImageDTO dto, Long id) {
+
+        ElectronicMaterial electronicMaterial = electronicalMaterialRepository.findByRefAndThingId(dto.getRef(), id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego przedmiotu lub materiału elektronicznego"));
+        electronicalMaterialRepository.deleteById(electronicMaterial.getId());
+    }
+
+    public List<ThingDTOpage1> getItemsFromCategory(String name) {
+
+        Category category = categoryService.findByNazwaKategorii(name);
+        List<CategoryObject> categoryObjects = categoryObjectService.findAllByCategory_Id(category.getId());
+
+        List<ThingDTOpage1> dtos = new ArrayList<>();
+
+        for (CategoryObject object : categoryObjects) {
+            ThingDTOpage1 dto = new ThingDTOpage1(object.getThing(), this.avgRating(object.getThing().getId()));
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    public List<ThingDTOpage1> getItemsByName(String name) {
+
+        List<Thing> things;
+
+        if (name.trim().isEmpty() || name == null) {
+            things = thingRepository.findAll();
+        } else {
+            things = this.findAllByNazwaContaining(name);
+        }
+        List<ThingDTOpage1> dtos = new ArrayList<>();
+
+        for (Thing thing : things) {
+
+            ThingDTOpage1 dto = new ThingDTOpage1(thing, this.avgRating(thing.getId()));
+            dtos.add(dto);
+        }
+        return dtos;
+
+    }
 }
+
