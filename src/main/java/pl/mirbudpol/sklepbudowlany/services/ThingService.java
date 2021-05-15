@@ -1,6 +1,7 @@
 package pl.mirbudpol.sklepbudowlany.services;
 
 
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -223,20 +224,6 @@ public class ThingService {
         electronicalMaterialRepository.deleteById(electronicMaterial.getId());
     }
 
-    public List<ThingDTOpage1> getItemsFromCategory(String name) {
-
-        Category category = categoryService.findByNazwaKategorii(name);
-        List<CategoryObject> categoryObjects = categoryObjectService.findAllByCategory_Id(category.getId());
-
-        List<ThingDTOpage1> dtos = new ArrayList<>();
-
-        for (CategoryObject object : categoryObjects) {
-            ThingDTOpage1 dto = new ThingDTOpage1(object.getThing(), this.avgRating(object.getThing().getId()));
-            dtos.add(dto);
-        }
-        return dtos;
-    }
-
     public List<ThingDTOpage1> getItemsByName(String name) {
 
         List<Thing> things;
@@ -255,6 +242,62 @@ public class ThingService {
         }
         return dtos;
 
+    }
+
+
+    public List<ThingDTOpage1> getItemsByCategories(List<String> categories){
+
+        Integer size = categories.size();
+        List<ThingDTOpage1> items = new ArrayList<>();
+
+        if(size==0)
+            return items;
+
+        List<List<CategoryObject>> itemsInCategory = new ArrayList<>();
+
+        for(String name: categories){
+
+          List<CategoryObject> list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
+          itemsInCategory.add(list);
+        }
+
+        List<Long> itemsId = new ArrayList<>();
+
+        for(List<CategoryObject> list: itemsInCategory){
+
+            for(CategoryObject object: list){
+                itemsId.add(object.getThing().getId());
+            }
+        }
+
+        Integer index = 0;
+        Long currentId;
+        Collections.sort(itemsId);
+
+        if(itemsId.size()==0)
+            return items;
+
+        currentId = itemsId.get(0);
+
+
+        for(Long id: itemsId){
+
+            if(id.equals(currentId))
+                index ++;
+            else
+            {
+                currentId = id;
+                index = 1;
+            }
+
+            if(index.equals(size))
+                items.add(new ThingDTOpage1(this.findById(currentId),this.avgRating(currentId)));
+
+
+
+        }
+
+        return items;
     }
 }
 
