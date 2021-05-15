@@ -57,10 +57,10 @@ public class ThingController {
         return thingService.getItemsFromCategory(categoryName);
     }
 
-    @GetMapping(path = "/name")
+    @GetMapping(path = "/name/{itemName}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ThingDTOpage1> getItemsByName(@RequestBody ItemNameDTO dto) {
-        return thingService.getItemsByName(dto.getItemName());
+    public List<ThingDTOpage1> getItemsByName(@PathVariable String itemName) {
+        return thingService.getItemsByName(itemName);
     }
 
     @ApiOperation("Zwraca 6 przedmiotów o najlepszych ocenach")

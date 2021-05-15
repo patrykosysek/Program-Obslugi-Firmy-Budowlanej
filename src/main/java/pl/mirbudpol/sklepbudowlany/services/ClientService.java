@@ -4,7 +4,6 @@ package pl.mirbudpol.sklepbudowlany.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mirbudpol.sklepbudowlany.DTO.ClientDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
@@ -29,60 +28,22 @@ public class ClientService {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + id + " nie istnieje"));
     }
 
-    @Transactional
-    public Client createClientWithAdress(ClientDTO dto) {
-        final Client client = new Client();
-        client.setImie(dto.getImie());
-        client.setNazwisko(dto.getNazwisko());
-        client.setEmail(dto.getEmail());
-
-        final Adress adress = new Adress();
-        adress.setKlient(client);
-        adress.setKraj(dto.getAdres().getKraj());
-        adress.setMiejscowosc(dto.getAdres().getMiejscowosc());
-        adress.setKodPocztowy(dto.getAdres().getKodPocztowy());
-        adress.setUlicaNrDomu(dto.getAdres().getUlicaNrDomu());
-
-        client.setAdres(adress);
-
-
-        return clientRepository.save(client);
+    public List<Client> findAllByZarejestrowanyUzytkownikTypUzytkownika(Integer role) {
+        return clientRepository.findAllByZarejestrowanyUzytkownikTypUzytkownika(role).orElseThrow(() -> new ResourceNotFoundException("Brak menadżerów"));
     }
 
     @Transactional
-    public Client createClient(ClientDTO dto) {
-        final Client client = new Client();
-        client.setImie(dto.getImie());
-        client.setNazwisko(dto.getNazwisko());
-        client.setEmail(dto.getEmail());
-        client.setAdres(null);
+    public Client createRegisteredClient(RegisteredClientDTO dto, Integer role) {
 
-        return clientRepository.save(client);
-    }
+        Client klient = new Client(dto);
 
-    @Transactional
-    public Client creatRegisteredClient(RegisteredClientDTO dto) {
 
-        Client klient = new Client();
-        klient.setImie(dto.getImie());
-        klient.setEmail(dto.getEmail());
-        klient.setNazwisko(dto.getNazwisko());
-
-        Adress adres = new Adress();
-        adres.setMiejscowosc(dto.getMiejscowosc());
-        adres.setKraj(dto.getKraj());
-        adres.setKodPocztowy(dto.getKodPocztowy());
-        adres.setUlicaNrDomu(dto.getUlicaNrDomu());
+        Adress adres = new Adress(dto);
         adres.setKlient(klient);
 
+        RegisteredUser user = new RegisteredUser(role, dto);
 
-        RegisteredUser user = new RegisteredUser();
-        user.setHaslo(dto.getHaslo());
-        user.setCzyAktywne(true);
-        user.setTypUzytkownika(3);
-        user.setLogin(dto.getLogin());
         user.setClient(klient);
-
         klient.setAdres(adres);
         klient.setZarejestrowanyUzytkownik(user);
 
@@ -91,6 +52,56 @@ public class ClientService {
 
     }
 
+    @Transactional
+    public Client createManager(RegisteredClientDTO dto, Long id) {
+
+        Client client = this.findById(id);
+
+        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 || client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 2 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true)
+            return this.createRegisteredClient(dto, 2);
+        else
+            throw (new ResourceNotFoundException("Brak uprawnień"));
+    }
+
+    @Transactional
+    public Client createAdmin(RegisteredClientDTO dto, Long id) {
+
+        Client client = this.findById(id);
+
+        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true)
+            return this.createRegisteredClient(dto, 1);
+        else
+            throw (new ResourceNotFoundException("Brak uprawnień"));
+    }
+
+    @Transactional
+    public void deleteManager(Long menagoId, Long userId) {
+
+        Client client = this.findById(userId);
+
+        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 || client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 2 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true)
+            clientRepository.deleteById(menagoId);
+        else
+            throw (new ResourceNotFoundException("Brak uprawnień"));
+    }
+
+    public List<RegisteredClientDTO> getManagers(Long id) {
+
+        Client client = this.findById(id);
+        List<RegisteredClientDTO> registeredClientDTOS = new ArrayList<>();
+        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true) {
+
+            List<Client> clients = this.findAllByZarejestrowanyUzytkownikTypUzytkownika(2);
+
+            for (Client object : clients) {
+
+                RegisteredClientDTO dto = new RegisteredClientDTO(object);
+                registeredClientDTOS.add(dto);
+            }
+            return registeredClientDTOS;
+        } else
+            return registeredClientDTOS;
+    }
 
     public List<RatingDTO> getClientRatings(Long id) {
 
@@ -104,6 +115,5 @@ public class ClientService {
 
         return ratingsDTO;
     }
-
 
 }
