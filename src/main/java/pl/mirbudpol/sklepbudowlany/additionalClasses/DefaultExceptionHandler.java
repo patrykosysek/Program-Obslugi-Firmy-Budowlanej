@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.mirbudpol.sklepbudowlany.DTO.ExceptionDTO;
+import pl.mirbudpol.sklepbudowlany.exceptions.NotValidPhoneNumber;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 
 import java.util.NoSuchElementException;
@@ -54,4 +55,10 @@ public class DefaultExceptionHandler {
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = NotValidPhoneNumber.class)
+    public ResponseEntity<String> handleNotValidPhoneNumber(NotValidPhoneNumber e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
 }

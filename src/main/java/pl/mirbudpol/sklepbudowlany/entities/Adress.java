@@ -18,7 +18,7 @@ public class Adress extends ID {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Country kraj;
+    private Country kraj = Country.POLSKA;
     @Column(nullable = false, name = "kod_pocztowy")
     private String kodPocztowy;
     @Column(nullable = false)
@@ -31,7 +31,6 @@ public class Adress extends ID {
     private Client klient;
 
     public Adress(RegisteredClientDTO dto) {
-        this.kraj = dto.getKraj();
         this.kodPocztowy = dto.getKodPocztowy();
         this.miejscowosc = dto.getMiejscowosc();
         this.ulicaNrDomu = dto.getUlicaNrDomu();

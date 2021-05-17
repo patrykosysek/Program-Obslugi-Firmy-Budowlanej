@@ -20,6 +20,6 @@ public class RatingDTOdetails extends RatingDTO {
 
     public RatingDTOdetails(Rating rating){
         super(rating);
-        this.login = rating.getClient().getZarejestrowanyUzytkownik().getLogin();
+        this.login = rating.getClient().getImie();
     }
 }
