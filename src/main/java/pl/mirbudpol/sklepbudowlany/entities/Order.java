@@ -6,6 +6,7 @@ import pl.mirbudpol.sklepbudowlany.additionalClasses.ID;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -14,7 +15,7 @@ import java.util.List;
 public class Order extends ID {
 
     @Column(nullable = false,name = "data_zamowienia")
-    private SimpleDateFormat dataZamowienia = new SimpleDateFormat("MM-dd-yyyy");
+    private String dataZamowienia;
 
     @Column(nullable = false,name = "czy_zrealizowane")
     private Boolean czyZrealizowane;
@@ -27,7 +28,7 @@ public class Order extends ID {
     private Client klient;
 
     @OneToMany(mappedBy = "zamowienie",cascade = CascadeType.ALL)
-    private List<ItemsOrders> przedmiotyZamowienia;
+    private List<ItemsOrders> przedmiotyZamowienia = new ArrayList<>();
 
 
 
