@@ -21,7 +21,7 @@ public class CategoryController {
 
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addRegisteredUser(@Validated @RequestBody CategoryDTO dto){
+        public void addCategory(@Validated @RequestBody CategoryDTO dto){
         categoryService.createCategory(dto);}
 
     @PostMapping(path = "/delete/{id}")

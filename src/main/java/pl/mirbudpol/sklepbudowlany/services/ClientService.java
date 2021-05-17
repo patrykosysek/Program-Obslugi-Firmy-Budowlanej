@@ -9,6 +9,7 @@ import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
 import pl.mirbudpol.sklepbudowlany.entities.Client;
 import pl.mirbudpol.sklepbudowlany.entities.Rating;
+import pl.mirbudpol.sklepbudowlany.exceptions.NoPermissions;
 import pl.mirbudpol.sklepbudowlany.exceptions.NotValidPhoneNumber;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
@@ -26,6 +27,7 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
+
     public Client findById(Long id) {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + id + " nie istnieje"));
     }
@@ -34,20 +36,28 @@ public class ClientService {
         return clientRepository.findAllByTypUzytkownika(role).orElseThrow(() -> new ResourceNotFoundException("Brak menadżerów"));
     }
 
+    public void permissions(Client client) {
+
+        if (client.getTypUzytkownika() != 1 || client.getTypUzytkownika() != 2 && client.getCzyAktywne() == false)
+            throw new NoPermissions("Brak uprawnień");
+
+    }
+
+
     public Boolean validPhoneNumber(String phoneNumber) {
 
         final String regex = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(phoneNumber);
-      return matcher.find();
+        return matcher.find();
 
     }
 
     @Transactional
     public Client createRegisteredClient(RegisteredClientDTO dto, Integer role) {
 
-        if(validPhoneNumber(dto.getNrTelefonu())) {
+        if (validPhoneNumber(dto.getNrTelefonu())) {
             Client klient = new Client(dto, role);
 
             Adress adres = new Adress(dto);
@@ -56,8 +66,7 @@ public class ClientService {
             klient.setAdres(adres);
 
             return clientRepository.save(klient);
-        }
-        else
+        } else
             throw new NotValidPhoneNumber("Nieprawidłowy numer telefonu");
     }
 
@@ -66,10 +75,9 @@ public class ClientService {
 
         Client client = this.findById(id);
 
-        if (client.getTypUzytkownika() == 1 || client.getTypUzytkownika() == 2 && client.getCzyAktywne() == true)
-            return this.createRegisteredClient(dto, 2);
-        else
-            throw (new ResourceNotFoundException("Brak uprawnień"));
+        this.permissions(client);
+        return this.createRegisteredClient(dto, 2);
+
     }
 
     @Transactional
@@ -88,28 +96,26 @@ public class ClientService {
 
         Client client = this.findById(userId);
 
-        if (client.getTypUzytkownika() == 1 || client.getTypUzytkownika() == 2 && client.getCzyAktywne() == true)
-            clientRepository.deleteById(menagoId);
-        else
-            throw (new ResourceNotFoundException("Brak uprawnień"));
+        permissions(client);
+        clientRepository.deleteById(menagoId);
+
     }
 
     public List<RegisteredClientDTO> getManagers(Long id) {
 
         Client client = this.findById(id);
         List<RegisteredClientDTO> registeredClientDTOS = new ArrayList<>();
-        if (client.getTypUzytkownika() == 1 && client.getCzyAktywne() == true) {
+        this.permissions(client);
 
-            List<Client> clients = this.findAllByTypUzytkownika(2);
+        List<Client> clients = this.findAllByTypUzytkownika(2);
 
-            for (Client object : clients) {
+        for (Client object : clients) {
 
-                RegisteredClientDTO dto = new RegisteredClientDTO(object);
-                registeredClientDTOS.add(dto);
-            }
-            return registeredClientDTOS;
-        } else
-            return registeredClientDTOS;
+            RegisteredClientDTO dto = new RegisteredClientDTO(object);
+            registeredClientDTOS.add(dto);
+        }
+        return registeredClientDTOS;
+        
     }
 
     public List<RatingDTO> getClientRatings(Long id) {
