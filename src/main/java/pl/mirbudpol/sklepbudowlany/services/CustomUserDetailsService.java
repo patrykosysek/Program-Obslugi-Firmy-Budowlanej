@@ -5,26 +5,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.mirbudpol.sklepbudowlany.DTO.CustomUserDetailsDTO;
-import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
+import pl.mirbudpol.sklepbudowlany.entities.Client;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
-import pl.mirbudpol.sklepbudowlany.repositories.RegisteredUserRepository;
+import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    RegisteredUserRepository registeredUserRepository;
+    ClientRepository clientRepository;
 
-    public RegisteredUser findByLogin(String login) {
-        return registeredUserRepository.findByLogin(login).orElseThrow(() -> new ResourceNotFoundException("Klient o loginie " + login + " nie istnieje"));
+    public Client findByEmail(String login) {
+        return clientRepository.findByEmail(login).orElseThrow(() -> new ResourceNotFoundException("Klient o emailu " + login + " nie istnieje"));
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        RegisteredUser user = findByLogin(login);
-        if (user == null) {
+        Client client = findByEmail(login);
+        if (client == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new CustomUserDetailsDTO(user);
+        return new CustomUserDetailsDTO(client);
     }
 
 }

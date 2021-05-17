@@ -2,16 +2,16 @@ package pl.mirbudpol.sklepbudowlany.DTO;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
+import pl.mirbudpol.sklepbudowlany.entities.Client;
 
 import java.util.Collection;
 
 public class CustomUserDetailsDTO implements UserDetails {
 
-    RegisteredUser registeredUser;
+    Client client;
 
-    public CustomUserDetailsDTO(RegisteredUser registeredUser) {
-        this.registeredUser = registeredUser;
+    public CustomUserDetailsDTO(Client client) {
+        this.client = client;
     }
 
     @Override
@@ -21,12 +21,12 @@ public class CustomUserDetailsDTO implements UserDetails {
 
     @Override
     public String getPassword() {
-        return registeredUser.getHaslo();
+        return client.getHaslo();
     }
 
     @Override
     public String getUsername() {
-        return registeredUser.getLogin();
+        return client.getEmail();
     }
 
     @Override
@@ -46,6 +46,6 @@ public class CustomUserDetailsDTO implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return client.getCzyAktywne();
     }
 }

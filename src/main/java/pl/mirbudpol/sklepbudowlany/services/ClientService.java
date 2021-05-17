@@ -2,6 +2,7 @@ package pl.mirbudpol.sklepbudowlany.services;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
@@ -57,8 +58,14 @@ public class ClientService {
     @Transactional
     public Client createRegisteredClient(RegisteredClientDTO dto, Integer role) {
 
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(dto.getHaslo());
+        dto.setHaslo(encodedPassword);
+
         if (validPhoneNumber(dto.getNrTelefonu())) {
             Client klient = new Client(dto, role);
+
+            klient.setHaslo(encodedPassword);
 
             Adress adres = new Adress(dto);
             adres.setKlient(klient);
