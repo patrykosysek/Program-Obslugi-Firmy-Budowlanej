@@ -11,6 +11,5 @@ public interface ClientRepository extends CrudRepository<Client, Long>, PagingAn
 
     Optional<Client> findById(Long id);
 
-    Optional<List<Client>> findAllByZarejestrowanyUzytkownikTypUzytkownika(Integer role);
-
+    Optional<List<Client>> findAllByTypUzytkownika(Integer role);
 }

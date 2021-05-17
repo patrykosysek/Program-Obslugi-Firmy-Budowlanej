@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity(name = "przedmioty_zamowienia")
 public class ItemsOrders extends ID {
 
-    @Column(nullable = false,name = "ilosc_przemdmiotu")
+    @Column(nullable = false,name = "ilosc_przedmiotu")
     private Integer iloscPrzedmiotu;
 
     @Column(nullable = false,name = "cena_sprzedazy")

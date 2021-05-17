@@ -2,7 +2,6 @@ package pl.mirbudpol.sklepbudowlany.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
@@ -10,12 +9,15 @@ import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
 import pl.mirbudpol.sklepbudowlany.entities.Client;
 import pl.mirbudpol.sklepbudowlany.entities.Rating;
-import pl.mirbudpol.sklepbudowlany.entities.RegisteredUser;
+import pl.mirbudpol.sklepbudowlany.exceptions.NoPermissions;
+import pl.mirbudpol.sklepbudowlany.exceptions.NotValidPhoneNumber;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 import pl.mirbudpol.sklepbudowlany.repositories.ClientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @RequiredArgsConstructor
@@ -25,38 +27,47 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
+
     public Client findById(Long id) {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + id + " nie istnieje"));
     }
 
-    public List<Client> findAllByZarejestrowanyUzytkownikTypUzytkownika(Integer role) {
-        return clientRepository.findAllByZarejestrowanyUzytkownikTypUzytkownika(role).orElseThrow(() -> new ResourceNotFoundException("Brak menadżerów"));
+    public List<Client> findAllByTypUzytkownika(Integer role) {
+        return clientRepository.findAllByTypUzytkownika(role).orElseThrow(() -> new ResourceNotFoundException("Brak menadżerów"));
+    }
+
+    public void permissions(Client client) {
+
+        if (client.getTypUzytkownika() != 1 || client.getTypUzytkownika() != 2 && client.getCzyAktywne() == false)
+            throw new NoPermissions("Brak uprawnień");
+
+    }
+
+
+    public Boolean validPhoneNumber(String phoneNumber) {
+
+        final String regex = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
+
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.find();
+
     }
 
     @Transactional
     public Client createRegisteredClient(RegisteredClientDTO dto, Integer role) {
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(dto.getHaslo());
-        dto.setHaslo(encodedPassword);
+        if (validPhoneNumber(dto.getNrTelefonu())) {
+            Client klient = new Client(dto, role);
 
-        Client klient = new Client(dto);
+            Adress adres = new Adress(dto);
+            adres.setKlient(klient);
 
+            klient.setAdres(adres);
 
-        Adress adres = new Adress(dto);
-        adres.setKlient(klient);
-
-        RegisteredUser user = new RegisteredUser(role, dto);
-
-        user.setHaslo(encodedPassword);
-
-        user.setClient(klient);
-        klient.setAdres(adres);
-        klient.setZarejestrowanyUzytkownik(user);
-
-
-        return clientRepository.save(klient);
-
+            return clientRepository.save(klient);
+        } else
+            throw new NotValidPhoneNumber("Nieprawidłowy numer telefonu");
     }
 
     @Transactional
@@ -64,10 +75,9 @@ public class ClientService {
 
         Client client = this.findById(id);
 
-        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 || client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 2 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true)
-            return this.createRegisteredClient(dto, 2);
-        else
-            throw (new ResourceNotFoundException("Brak uprawnień"));
+        this.permissions(client);
+        return this.createRegisteredClient(dto, 2);
+
     }
 
     @Transactional
@@ -75,7 +85,7 @@ public class ClientService {
 
         Client client = this.findById(id);
 
-        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true)
+        if (client.getTypUzytkownika() == 1 && client.getCzyAktywne() == true)
             return this.createRegisteredClient(dto, 1);
         else
             throw (new ResourceNotFoundException("Brak uprawnień"));
@@ -86,28 +96,26 @@ public class ClientService {
 
         Client client = this.findById(userId);
 
-        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 || client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 2 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true)
-            clientRepository.deleteById(menagoId);
-        else
-            throw (new ResourceNotFoundException("Brak uprawnień"));
+        permissions(client);
+        clientRepository.deleteById(menagoId);
+
     }
 
     public List<RegisteredClientDTO> getManagers(Long id) {
 
         Client client = this.findById(id);
         List<RegisteredClientDTO> registeredClientDTOS = new ArrayList<>();
-        if (client.getZarejestrowanyUzytkownik().getTypUzytkownika() == 1 && client.getZarejestrowanyUzytkownik().getCzyAktywne() == true) {
+        this.permissions(client);
 
-            List<Client> clients = this.findAllByZarejestrowanyUzytkownikTypUzytkownika(2);
+        List<Client> clients = this.findAllByTypUzytkownika(2);
 
-            for (Client object : clients) {
+        for (Client object : clients) {
 
-                RegisteredClientDTO dto = new RegisteredClientDTO(object);
-                registeredClientDTOS.add(dto);
-            }
-            return registeredClientDTOS;
-        } else
-            return registeredClientDTOS;
+            RegisteredClientDTO dto = new RegisteredClientDTO(object);
+            registeredClientDTOS.add(dto);
+        }
+        return registeredClientDTOS;
+        
     }
 
     public List<RatingDTO> getClientRatings(Long id) {
