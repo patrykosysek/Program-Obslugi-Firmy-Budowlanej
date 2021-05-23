@@ -21,9 +21,9 @@ public class RegisteredClientDTO {
 
     private Long id;
 
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 20, message = "Imie powinno zawierać się w przedziale od 2 do 20 znaków")
     private String imie;
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 20, message = "Nazwisko powinno zawierać się w przedziale od 2 do 20 znaków")
     private String nazwisko;
     @Email(message = "Email jest nieprawidłowy")
     private String email;
