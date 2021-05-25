@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.mirbudpol.sklepbudowlany.DTO.EmailDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.services.ClientService;
@@ -26,18 +27,18 @@ public class ClientController {
         clientService.createRegisteredClient(dto, 3);
     }
 
-    @ApiOperation("Endpoint do zarejestrowania menadżera, dodatkowo trzeba przekazać id użytkownika, który próbuje go zarejestrować")
-    @PostMapping(path = "/registration/{id}")
+    @ApiOperation("Endpoint do zarejestrowania menadżera")
+    @PostMapping(path = "/registration/manager")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerManager(@Validated @RequestBody RegisteredClientDTO dto, @PathVariable Long id) {
-        clientService.createManager(dto, id);
+    public void registerManager(@Validated @RequestBody RegisteredClientDTO dto) {
+        clientService.createManager(dto);
     }
 
-    @ApiOperation("Endpoint do zarejestrowania admina, dodatkowo trzeba przekazać id użytkownika, który próbuje go zarejestrować")
-    @PostMapping(path = "/registration/admin/{id}}")
+    @ApiOperation("Endpoint do zarejestrowania admina")
+    @PostMapping(path = "/registration/admin}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAdmin(@Validated @RequestBody RegisteredClientDTO dto, @PathVariable Long id) {
-        clientService.createAdmin(dto, id);
+    public void registerAdmin(@Validated @RequestBody RegisteredClientDTO dto) {
+        clientService.createAdmin(dto);
     }
 
     @ApiOperation("Zwraca wszystkie oceny wystawione przez danego użytkownika")
@@ -47,17 +48,30 @@ public class ClientController {
         return clientService.getClientRatings(id);
     }
 
-    @ApiOperation("Zwraca liste menadżerów, dodatkowo trzeba przekazać id użytkownika, który próbuje pobrać listę")
-    @GetMapping(path = "/managers/{id}")
+    @ApiOperation("Zwraca liste menadżerów")
+    @GetMapping(path = "/managers")
     @ResponseStatus(HttpStatus.OK)
-    public List<RegisteredClientDTO> getManagers(@PathVariable Long id) {
-        return clientService.getManagers(id);
+    public List<RegisteredClientDTO> getManagers() {
+        return clientService.getManagers();
     }
 
-    @ApiOperation("Usuwa menadżera o podanym id, dodatkowo trzeba przekazać id użytkownika, który próbuje go usunąć")
-    @DeleteMapping(path = "/managers/{menagoId}/{userId}")
+    @ApiOperation("Usuwa menadżera o podanym id")
+    @DeleteMapping(path = "/managers/{menagoId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteManager(@PathVariable Long menagoId, @PathVariable Long userId) {
-        clientService.deleteManager(menagoId, userId);
+    public void deleteManager(@PathVariable Long menagoId) {
+        clientService.deleteManager(menagoId);
     }
+
+    @ApiOperation("Endpoint pobrania roli użytkownika na podstawie jego emailu")
+    @PostMapping(path = "/getRole")
+    @ResponseStatus(HttpStatus.CREATED)
+    public int getRole(@Validated @RequestBody EmailDTO dto) {
+        return clientService.getRole(dto);
+    }
+
+    @GetMapping(path = "/tele/{number}")
+    public Boolean isValid(@PathVariable String number){
+        return clientService.validPhoneNumber(number);
+    }
+
 }

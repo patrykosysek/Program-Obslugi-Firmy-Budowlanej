@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Setter
 @Getter
-@Entity(name = "materiałyElektroniczne")
+@Entity(name = "materialyElektroniczne")
 public class ElectronicMaterial extends ID {
 
     @Column(nullable = false)

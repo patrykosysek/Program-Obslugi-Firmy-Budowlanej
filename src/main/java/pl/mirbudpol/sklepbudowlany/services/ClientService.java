@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.mirbudpol.sklepbudowlany.DTO.EmailDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
@@ -27,10 +28,15 @@ import java.util.regex.Pattern;
 public class ClientService {
 
     private final ClientRepository clientRepository;
-
+    private final static String regex = "(?:(?:(?:\\+|00)?48)|(?:\\(\\+?48\\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\\d{7}";
+    private final static Pattern pattern = Pattern.compile(regex);
 
     public Client findById(Long id) {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + id + " nie istnieje"));
+    }
+
+    public Client findByEmail(String email) {
+        return clientRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + email + " nie istnieje"));
     }
 
     public List<Client> findAllByTypUzytkownika(Integer role) {
@@ -47,9 +53,6 @@ public class ClientService {
 
     public Boolean validPhoneNumber(String phoneNumber) {
 
-        final String regex = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
-
-        final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.find();
 
@@ -78,41 +81,41 @@ public class ClientService {
     }
 
     @Transactional
-    public Client createManager(RegisteredClientDTO dto, Long id) {
+    public Client createManager(RegisteredClientDTO dto) {
 
-        Client client = this.findById(id);
+      //  Client client = this.findById(id);
+       // this.permissions(client);
 
-        this.permissions(client);
         return this.createRegisteredClient(dto, 2);
 
     }
 
     @Transactional
-    public Client createAdmin(RegisteredClientDTO dto, Long id) {
+    public Client createAdmin(RegisteredClientDTO dto) {
 
-        Client client = this.findById(id);
+       // Client client = this.findById(id);
 
-        if (client.getTypUzytkownika() == 1 && client.getCzyAktywne() == true)
+       // if (client.getTypUzytkownika() == 1 && client.getCzyAktywne() == true)
             return this.createRegisteredClient(dto, 1);
-        else
-            throw (new ResourceNotFoundException("Brak uprawnień"));
+       // else
+          //  throw (new ResourceNotFoundException("Brak uprawnień"));
     }
 
     @Transactional
-    public void deleteManager(Long menagoId, Long userId) {
+    public void deleteManager(Long menagoId) {
 
-        Client client = this.findById(userId);
+        //Client client = this.findById(userId);
+        //permissions(client);
 
-        permissions(client);
         clientRepository.deleteById(menagoId);
 
     }
 
-    public List<RegisteredClientDTO> getManagers(Long id) {
+    public List<RegisteredClientDTO> getManagers() {
 
-        Client client = this.findById(id);
+        //Client client = this.findById(id);
         List<RegisteredClientDTO> registeredClientDTOS = new ArrayList<>();
-        this.permissions(client);
+       // this.permissions(client);
 
         List<Client> clients = this.findAllByTypUzytkownika(2);
 
@@ -122,8 +125,9 @@ public class ClientService {
             registeredClientDTOS.add(dto);
         }
         return registeredClientDTOS;
-        
     }
+
+
 
     public List<RatingDTO> getClientRatings(Long id) {
 
@@ -136,6 +140,10 @@ public class ClientService {
         }
 
         return ratingsDTO;
+    }
+
+    public int getRole(EmailDTO dto){
+        return this.findByEmail(dto.getEmail()).getTypUzytkownika();
     }
 
 }
