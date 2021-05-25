@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.mirbudpol.sklepbudowlany.DTO.EmailDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.services.ClientService;
@@ -59,6 +60,13 @@ public class ClientController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteManager(@PathVariable Long menagoId) {
         clientService.deleteManager(menagoId);
+    }
+
+    @ApiOperation("Endpoint pobrania roli użytkownika na podstawie jego emailu")
+    @PostMapping(path = "/getRole")
+    @ResponseStatus(HttpStatus.CREATED)
+    public int getRole(@Validated @RequestBody EmailDTO dto) {
+        return clientService.getRole(dto);
     }
 
     @GetMapping(path = "/tele/{number}")

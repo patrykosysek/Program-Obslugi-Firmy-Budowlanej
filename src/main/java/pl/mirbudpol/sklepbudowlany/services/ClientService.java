@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.mirbudpol.sklepbudowlany.DTO.EmailDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RatingDTO;
 import pl.mirbudpol.sklepbudowlany.DTO.RegisteredClientDTO;
 import pl.mirbudpol.sklepbudowlany.entities.Adress;
@@ -32,6 +33,10 @@ public class ClientService {
 
     public Client findById(Long id) {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + id + " nie istnieje"));
+    }
+
+    public Client findByEmail(String email) {
+        return clientRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Klient o id " + email + " nie istnieje"));
     }
 
     public List<Client> findAllByTypUzytkownika(Integer role) {
@@ -135,6 +140,10 @@ public class ClientService {
         }
 
         return ratingsDTO;
+    }
+
+    public int getRole(EmailDTO dto){
+        return this.findByEmail(dto.getEmail()).getTypUzytkownika();
     }
 
 }

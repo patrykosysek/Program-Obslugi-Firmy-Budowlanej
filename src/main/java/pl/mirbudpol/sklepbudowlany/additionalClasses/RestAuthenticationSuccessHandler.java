@@ -5,6 +5,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,5 +17,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
                                         Authentication authentication) throws IOException, ServletException {
         response.getWriter().print("{\"responseCode\":\"SUCCESS\"}");
         response.getWriter().flush();
+        Cookie cookie = new Cookie("AAAA", "AAAA");
+        response.addCookie(cookie);
     }
 }
