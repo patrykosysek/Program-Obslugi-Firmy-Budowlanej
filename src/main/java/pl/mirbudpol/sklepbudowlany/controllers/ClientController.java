@@ -34,7 +34,7 @@ public class ClientController {
     }
 
     @ApiOperation("Endpoint do zarejestrowania admina")
-    @PostMapping(path = "/registration/admin}")
+    @PostMapping(path = "/registration/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAdmin(@Validated @RequestBody RegisteredClientDTO dto) {
         clientService.createAdmin(dto);
