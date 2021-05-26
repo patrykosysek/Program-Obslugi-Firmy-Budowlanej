@@ -73,8 +73,6 @@ public class Thing extends ID {
         this.cenaSprzedazy = dto.getCenaSprzedazy();
         this.czyArchiwalny = dto.getCzyArchiwalny();
 
-
     }
-
 }
 

@@ -1,7 +1,6 @@
 package pl.mirbudpol.sklepbudowlany.services;
 
 
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,14 +39,13 @@ public class ThingService {
 
         Float ocena = 0f;
         Integer i = 0;
-        if(ratings.size()!=0) {
+        if (ratings.size() != 0) {
             for (Rating rating : ratings) {
                 ocena += rating.getOcena();
                 i++;
             }
-            return ocena/i;
-        }
-        else
+            return ocena / i;
+        } else
             return ocena;
 
     }
@@ -100,8 +98,10 @@ public class ThingService {
     public void updateThing(Long id, ThingDTO dto) {
 
         Thing thing = this.findById(id);
-        thing.update(dto);
+         thing.update(dto);
+
     }
+
 
     @Transactional
     public void deleteThing(Long id) {
@@ -180,10 +180,10 @@ public class ThingService {
     }
 
     @Transactional
-    public void deleteCategory(ItemCategoryDTO dto, Long id) {
+    public void deleteCategory(String name, Long id) {
 
         CategoryObject categoryObject = categoryObjectRepository.findByThing_IdAndCategory_Id(id, categoryService.findByNazwaKategorii(
-                dto.getCategoryName()).getId()).orElseThrow(() -> new ResourceNotFoundException("Nieznaleziono takiego przedmiotu lub kategorii"));
+                name).getId()).orElseThrow(() -> new ResourceNotFoundException("Nieznaleziono takiego przedmiotu lub kategorii"));
 
         categoryObjectRepository.deleteById(categoryObject.getId());
     }
@@ -245,27 +245,27 @@ public class ThingService {
     }
 
 
-    public List<ThingDTOpage1> getItemsByCategories(List<String> categories){
+    public List<ThingDTOpage1> getItemsByCategories(List<String> categories) {
 
         Integer size = categories.size();
         List<ThingDTOpage1> items = new ArrayList<>();
 
-        if(size==0)
+        if (size == 0)
             return items;
 
         List<List<CategoryObject>> itemsInCategory = new ArrayList<>();
 
-        for(String name: categories){
+        for (String name : categories) {
 
-          List<CategoryObject> list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
-          itemsInCategory.add(list);
+            List<CategoryObject> list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
+            itemsInCategory.add(list);
         }
 
         List<Long> itemsId = new ArrayList<>();
 
-        for(List<CategoryObject> list: itemsInCategory){
+        for (List<CategoryObject> list : itemsInCategory) {
 
-            for(CategoryObject object: list){
+            for (CategoryObject object : list) {
                 itemsId.add(object.getThing().getId());
             }
         }
@@ -274,25 +274,23 @@ public class ThingService {
         Long currentId;
         Collections.sort(itemsId);
 
-        if(itemsId.size()==0)
+        if (itemsId.size() == 0)
             return items;
 
         currentId = itemsId.get(0);
 
 
-        for(Long id: itemsId){
+        for (Long id : itemsId) {
 
-            if(id.equals(currentId))
-                index ++;
-            else
-            {
+            if (id.equals(currentId))
+                index++;
+            else {
                 currentId = id;
                 index = 1;
             }
 
-            if(index.equals(size))
-                items.add(new ThingDTOpage1(this.findById(currentId),this.avgRating(currentId)));
-
+            if (index.equals(size))
+                items.add(new ThingDTOpage1(this.findById(currentId), this.avgRating(currentId)));
 
 
         }

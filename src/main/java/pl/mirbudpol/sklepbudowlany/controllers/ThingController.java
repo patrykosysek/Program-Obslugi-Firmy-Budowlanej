@@ -83,10 +83,10 @@ public class ThingController {
     }
 
     @ApiOperation("Usuwa daną kategorię z przedmiotu")
-    @DeleteMapping(path = "/category/{id}")
+    @DeleteMapping(path = "/category/{id}/{name}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@Validated @RequestBody ItemCategoryDTO dto, @PathVariable Long id) {
-        thingService.deleteCategory(dto, id);
+    public void deleteCategory(@PathVariable String name, @PathVariable Long id) {
+        thingService.deleteCategory(name, id);
     }
 
     @ApiOperation("Dodaje zdjęcie do danego przedmiotu")
