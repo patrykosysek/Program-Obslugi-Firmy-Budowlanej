@@ -9,6 +9,7 @@ import pl.mirbudpol.sklepbudowlany.entities.Category;
 import pl.mirbudpol.sklepbudowlany.entities.Client;
 import pl.mirbudpol.sklepbudowlany.entities.Rating;
 import pl.mirbudpol.sklepbudowlany.entities.Thing;
+import pl.mirbudpol.sklepbudowlany.exceptions.DuplicatedValueException;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 import pl.mirbudpol.sklepbudowlany.repositories.CategoryRepository;
 
@@ -25,6 +26,10 @@ public class CategoryService {
 
     @Transactional
     public Category createCategory(CategoryDTO dto) {
+
+        if(categoryRepository.findByNazwaKategorii(dto.getNazwaKategorii()).isPresent()){
+            throw new DuplicatedValueException("Dana kategoria już istnieje");
+        }
         final Category category = new Category();
         category.setNazwaKategorii(dto.getNazwaKategorii());
         category.setCategoryObjects(null);

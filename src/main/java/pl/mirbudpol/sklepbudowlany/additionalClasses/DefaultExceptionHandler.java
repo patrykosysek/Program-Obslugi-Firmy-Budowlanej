@@ -13,7 +13,6 @@ import pl.mirbudpol.sklepbudowlany.DTO.ExceptionDTO;
 import pl.mirbudpol.sklepbudowlany.exceptions.*;
 
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j

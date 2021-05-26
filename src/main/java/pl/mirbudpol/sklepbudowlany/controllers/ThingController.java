@@ -29,7 +29,7 @@ public class ThingController {
     @ApiOperation("Modyfikuje dany przedmiot")
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateObject(@PathVariable Long id, @RequestBody ThingDTO dto) {
+    public void updateObject(@Validated @PathVariable Long id, @RequestBody ThingDTO dto) {
         thingService.updateThing(id, dto);
     }
 

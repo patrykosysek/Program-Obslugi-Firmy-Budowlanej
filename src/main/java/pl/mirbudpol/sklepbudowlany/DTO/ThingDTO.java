@@ -23,17 +23,17 @@ public class ThingDTO {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Nieprawidłowa nazwa")
     private String nazwa;
-    @NotBlank
+    @NotBlank(message = "Nieprawidłowy opis")
     private String opis;
-    @NotNull
+    @NotNull(message = "Nieprawidłowa cena zakupu")
     private Float cenaZakupu;
-    @NotNull
+    @NotNull(message = "Nieprawidłowa ilość na magazynie")
     private Integer iloscNaMagazynie;
-    @NotNull
+    @NotNull(message = "Nieprawidłowa cena sprzedaży")
     private Float cenaSprzedazy;
-    @NotNull
+    @NotNull(message = "Nieprawidłowa czy archiwalny")
     private Boolean czyArchiwalny;
 
     private List<String> kategoriaId = new ArrayList<>();
