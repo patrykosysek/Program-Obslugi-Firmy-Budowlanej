@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mirbudpol.sklepbudowlany.DTO.*;
 import pl.mirbudpol.sklepbudowlany.entities.*;
+import pl.mirbudpol.sklepbudowlany.exceptions.DuplicatedValueException;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
 import pl.mirbudpol.sklepbudowlany.repositories.*;
 
@@ -173,6 +174,11 @@ public class ThingService {
         Thing thing = this.findById(id);
         Category category = categoryService.findByNazwaKategorii(dto.getCategoryName());
 
+        for(CategoryObject object: thing.getCategoryObjects()){
+            if(object.getCategory().getNazwaKategorii()==dto.getCategoryName())
+                throw new DuplicatedValueException("Przedmiot posiada już tę kategorię");
+        }
+
         CategoryObject categoryObject = new CategoryObject(category, thing);
         thing.getCategoryObjects().add(categoryObject);
 
@@ -193,6 +199,11 @@ public class ThingService {
 
         Thing thing = this.findById(id);
 
+        for(Images images: thing.getZdjecia()){
+            if(images.getRef().equals(dto.getRef()))
+                throw new DuplicatedValueException("Przedmiot posiada już to zdjęcie");
+        }
+
         Images image = new Images(dto.getRef(), thing);
         thing.getZdjecia().add(image);
 
@@ -200,9 +211,9 @@ public class ThingService {
     }
 
     @Transactional
-    public void deleteImage(ImageDTO dto, Long id) {
+    public void deleteImage(String ref, Long id) {
 
-        Images image = imagesRepository.findByRefAndThingId(dto.getRef(), id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego przedmiotu lub zdjęcia"));
+        Images image = imagesRepository.findByRefAndThingId(ref, id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego przedmiotu lub zdjęcia"));
         imagesRepository.deleteById(image.getId());
     }
 
@@ -211,6 +222,11 @@ public class ThingService {
 
         Thing thing = this.findById(id);
 
+        for(ElectronicMaterial electronicMaterial: thing.getMaterialyElektoniczne()){
+            if(electronicMaterial.getRef().equals(dto.getRef()))
+                throw new DuplicatedValueException("Przedmiot posiada już ten materiał elektroniczny");
+        }
+
         ElectronicMaterial electronicMaterial = new ElectronicMaterial(dto.getRef(), thing);
         thing.getMaterialyElektoniczne().add(electronicMaterial);
 
@@ -218,9 +234,9 @@ public class ThingService {
     }
 
     @Transactional
-    public void deleteElectronicalMaterial(ImageDTO dto, Long id) {
+    public void deleteElectronicalMaterial(String ref, Long id) {
 
-        ElectronicMaterial electronicMaterial = electronicalMaterialRepository.findByRefAndThingId(dto.getRef(), id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego przedmiotu lub materiału elektronicznego"));
+        ElectronicMaterial electronicMaterial = electronicalMaterialRepository.findByRefAndThingId(ref, id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego przedmiotu lub materiału elektronicznego"));
         electronicalMaterialRepository.deleteById(electronicMaterial.getId());
     }
 

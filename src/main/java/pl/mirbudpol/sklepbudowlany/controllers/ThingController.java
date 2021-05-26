@@ -97,10 +97,10 @@ public class ThingController {
     }
 
     @ApiOperation("Usuwa zdjęcie z danego przedmiotu")
-    @DeleteMapping(path = "/image/{id}")
+    @DeleteMapping(path = "/image/{id}/{ref}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteImage(@Validated @RequestBody ImageDTO dto, @PathVariable Long id) {
-        thingService.deleteImage(dto, id);
+    public void deleteImage(@PathVariable String ref, @PathVariable Long id) {
+        thingService.deleteImage(ref, id);
 
     }
 
@@ -112,9 +112,9 @@ public class ThingController {
     }
 
     @ApiOperation("Usuwa materiał elektroniczny z danego przedmiotu")
-    @DeleteMapping(path = "/electronical/{id}")
+    @DeleteMapping(path = "/electronical/{id}/{ref}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteElectronical(@Validated @RequestBody ImageDTO dto, @PathVariable Long id) {
-        thingService.deleteElectronicalMaterial(dto, id);
+    public void deleteElectronical(@PathVariable String ref, @PathVariable Long id) {
+        thingService.deleteElectronicalMaterial(ref, id);
     }
 }
