@@ -24,10 +24,10 @@ public class CategoryController {
         public void addCategory(@Validated @RequestBody CategoryDTO dto){
         categoryService.createCategory(dto);}
 
-    @PostMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "/delete/{name}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void deleteCategory(@PathVariable Long id){
-        categoryService.deleteCategory(id);}
+    public void deleteCategory(@PathVariable String name){
+        categoryService.deleteCategory(name);}
 
     @GetMapping(path = "/getAll")
     @ResponseStatus(HttpStatus.CREATED)

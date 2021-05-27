@@ -46,8 +46,8 @@ public class CategoryService {
     }
 
     @Transactional
-    public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+    public void deleteCategory(String name) {
+        categoryRepository.deleteById(this.findByNazwaKategorii(name).getId());
     }
 
     public List<CategoryDTO> getCategories(){
