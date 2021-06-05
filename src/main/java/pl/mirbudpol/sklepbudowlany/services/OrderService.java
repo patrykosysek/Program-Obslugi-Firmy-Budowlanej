@@ -70,6 +70,8 @@ public class OrderService {
             else {
                 itemsOrders.setIloscPrzedmiotu(dto.getItemsQuantity().get(i));
                 thing.setIloscNaMagazynie(thing.getIloscNaMagazynie() - dto.getItemsQuantity().get(i));
+                if(thing.getIloscNaMagazynie() == 0)
+                    thing.setCzyArchiwalny(true);
             }
             itemsOrders.setCenaSprzedazy(thing.getCenaSprzedazy());
             itemsOrders.setPrzedmiot(thing);

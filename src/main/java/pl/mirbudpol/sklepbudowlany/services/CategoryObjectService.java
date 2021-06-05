@@ -20,5 +20,8 @@ public class CategoryObjectService {
         return categoryObjectRepository.findAllByCategory_Id(id).orElseThrow(()-> new ResourceNotFoundException("Nie znaleziono przedmiotów z takej kategorii"));
     }
 
+    public List<CategoryObject> findAllByCategory_IdAndThing_CzyArchiwalny(Long id, Boolean archive){
+        return categoryObjectRepository.findAllByCategory_IdAndThing_CzyArchiwalny(id,archive).orElseThrow(()->new ResourceNotFoundException("Nie znaleziono przedmiotów z takej kategorii"));
+    }
 
 }

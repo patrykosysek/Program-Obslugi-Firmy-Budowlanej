@@ -68,6 +68,13 @@ public class ThingController {
         return thingService.getItemsByCategories(categoriesNames);
     }
 
+    @ApiOperation("Zwraca przedmioty, które nie są archiwalne i posiadają podane w argumencie kategorie (przykład: meble,ogród)")
+    @GetMapping(path = "/categories/active/{categoriesNames}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ThingDTOpage1> getActiveItemsByCategories(@PathVariable List<String> categoriesNames) {
+        return thingService.getActiveItemsByCategory(categoriesNames);
+    }
+
     @ApiOperation("Zwraca 6 przedmiotów o najlepszych ocenach")
     @GetMapping(path = "/recommended")
     @ResponseStatus(HttpStatus.OK)
