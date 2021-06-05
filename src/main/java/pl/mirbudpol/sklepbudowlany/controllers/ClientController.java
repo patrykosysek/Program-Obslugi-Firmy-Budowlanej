@@ -69,6 +69,11 @@ public class ClientController {
         return clientService.getRole(dto);
     }
 
+    @ApiOperation("Endpoint pobrania id użytkownika na podstawie jego emailu")
+    @PostMapping(path = "/getIdByEmail")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long getIdByEmail(@Validated @RequestBody EmailDTO dto) {return clientService.getIdByEmail(dto);}
+
     @GetMapping(path = "/tele/{number}")
     public Boolean isValid(@PathVariable String number){
         return clientService.validPhoneNumber(number);

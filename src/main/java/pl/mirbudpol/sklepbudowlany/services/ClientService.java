@@ -146,4 +146,8 @@ public class ClientService {
         return this.findByEmail(dto.getEmail()).getTypUzytkownika();
     }
 
+    public Long getIdByEmail(EmailDTO dto){
+        return this.findByEmail(dto.getEmail()).getId();
+    }
+
 }
