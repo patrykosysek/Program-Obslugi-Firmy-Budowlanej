@@ -10,4 +10,5 @@ public interface CategoryObjectRepository extends JpaRepository<CategoryObject, 
 
     Optional<CategoryObject> findByThing_IdAndCategory_Id(Long ThingId, Long CategoryId);
     Optional<List<CategoryObject>> findAllByCategory_Id(Long id);
+    Optional<List<CategoryObject>> findAllByCategory_IdAndThing_CzyArchiwalny(Long id, Boolean archive);
 }

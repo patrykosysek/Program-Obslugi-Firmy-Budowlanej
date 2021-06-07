@@ -99,7 +99,7 @@ public class ThingService {
     public void updateThing(Long id, ThingDTO dto) {
 
         Thing thing = this.findById(id);
-         thing.update(dto);
+        thing.update(dto);
 
     }
 
@@ -174,8 +174,8 @@ public class ThingService {
         Thing thing = this.findById(id);
         Category category = categoryService.findByNazwaKategorii(dto.getCategoryName());
 
-        for(CategoryObject object: thing.getCategoryObjects()){
-            if(object.getCategory().getNazwaKategorii()==dto.getCategoryName())
+        for (CategoryObject object : thing.getCategoryObjects()) {
+            if (object.getCategory().getNazwaKategorii() == dto.getCategoryName())
                 throw new DuplicatedValueException("Przedmiot posiada już tę kategorię");
         }
 
@@ -199,8 +199,8 @@ public class ThingService {
 
         Thing thing = this.findById(id);
 
-        for(Images images: thing.getZdjecia()){
-            if(images.getRef().equals(dto.getRef()))
+        for (Images images : thing.getZdjecia()) {
+            if (images.getRef().equals(dto.getRef()))
                 throw new DuplicatedValueException("Przedmiot posiada już to zdjęcie");
         }
 
@@ -222,8 +222,8 @@ public class ThingService {
 
         Thing thing = this.findById(id);
 
-        for(ElectronicMaterial electronicMaterial: thing.getMaterialyElektoniczne()){
-            if(electronicMaterial.getRef().equals(dto.getRef()))
+        for (ElectronicMaterial electronicMaterial : thing.getMaterialyElektoniczne()) {
+            if (electronicMaterial.getRef().equals(dto.getRef()))
                 throw new DuplicatedValueException("Przedmiot posiada już ten materiał elektroniczny");
         }
 
@@ -313,5 +313,59 @@ public class ThingService {
 
         return items;
     }
+
+    public List<ThingDTOpage1> getActiveItemsByCategory(List<String> categories) {
+
+        Integer size = categories.size();
+        List<ThingDTOpage1> items = new ArrayList<>();
+
+        if (size == 0)
+            return items;
+
+        List<List<CategoryObject>> itemsInCategory = new ArrayList<>();
+
+        for (String name : categories) {
+
+            List<CategoryObject> list = categoryObjectService.findAllByCategory_IdAndThing_CzyArchiwalny(categoryService.findByNazwaKategorii(name).getId(), false);
+            itemsInCategory.add(list);
+        }
+
+        List<Long> itemsId = new ArrayList<>();
+
+        for (List<CategoryObject> list : itemsInCategory) {
+
+            for (CategoryObject object : list) {
+                itemsId.add(object.getThing().getId());
+            }
+        }
+
+        Integer index = 0;
+        Long currentId;
+        Collections.sort(itemsId);
+
+        if (itemsId.size() == 0)
+            return items;
+
+        currentId = itemsId.get(0);
+
+
+        for (Long id : itemsId) {
+
+            if (id.equals(currentId))
+                index++;
+            else {
+                currentId = id;
+                index = 1;
+            }
+
+            if (index.equals(size))
+                items.add(new ThingDTOpage1(this.findById(currentId), this.avgRating(currentId)));
+
+
+        }
+
+        return items;
+    }
+
 }
 
