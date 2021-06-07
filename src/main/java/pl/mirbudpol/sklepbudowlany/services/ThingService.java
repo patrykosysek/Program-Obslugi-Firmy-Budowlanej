@@ -175,7 +175,7 @@ public class ThingService {
         Category category = categoryService.findByNazwaKategorii(dto.getCategoryName());
 
         for (CategoryObject object : thing.getCategoryObjects()) {
-            if (object.getCategory().getNazwaKategorii() == dto.getCategoryName())
+            if (object.getCategory().getNazwaKategorii().equals(dto.getCategoryName()))
                 throw new DuplicatedValueException("Przedmiot posiada już tę kategorię");
         }
 
