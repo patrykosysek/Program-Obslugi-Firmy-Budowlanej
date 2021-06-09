@@ -124,7 +124,7 @@ public class ThingService {
 
         Map<Long, Float> srednia = new HashMap<>();
 
-        List<Thing> rekomednowane = thingRepository.findAll();
+        List<Thing> rekomednowane = thingRepository.findAllByCzyArchiwalnyFalse();
         List<ThingDTOpage1> rekomendowane_zwrot = new ArrayList<>();
 
         for (Thing thing : rekomednowane) {
