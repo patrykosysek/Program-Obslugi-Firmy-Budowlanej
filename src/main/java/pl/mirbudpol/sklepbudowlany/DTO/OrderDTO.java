@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderDTO {
 
     @NotNull
-    private String dataZamówienia;
+    private String dataZamowienia;
     @NotNull
     private Boolean czyZrealizowane;
     @NotNull
@@ -26,15 +26,18 @@ public class OrderDTO {
     @NotNull
     private Long clientId;
     @NotNull
+    private Long orderId;
+    @NotNull
     private List<ItemsOrdersDTO> przedmiotyZamowienia = new ArrayList<>();
 
 
     public OrderDTO(Order order) {
 
-        this.dataZamówienia = order.getDataZamowienia();
+        this.dataZamowienia = order.getDataZamowienia();
         this.czyZrealizowane = order.getCzyZrealizowane();
         this.wartoscZamowienia = order.getWartoscZamowienia();
         this.clientId = order.getKlient().getId();
+        this.orderId = order.getId();
         for (ItemsOrders itemsOrders : order.getPrzedmiotyZamowienia()) {
             ItemsOrdersDTO dto = new ItemsOrdersDTO(itemsOrders);
             this.przedmiotyZamowienia.add(dto);
