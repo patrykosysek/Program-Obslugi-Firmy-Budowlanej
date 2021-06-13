@@ -31,7 +31,7 @@ public class ThingService {
     }
 
     public List<Thing> findAllByNazwaContaining(String name) {
-        return thingRepository.findAllByNazwaContaining(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
+        return thingRepository.findAllByNazwaContainingAndCzyArchiwalnyFalse(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
     }
 
     public Float avgRating(Long id) {
@@ -106,7 +106,9 @@ public class ThingService {
 
     @Transactional
     public void deleteThing(Long id) {
-        thingRepository.deleteById(id);
+        //thingRepository.deleteById(id);
+        Thing thing = this.findById(id);
+        thing.setCzyArchiwalny(true);
     }
 
     public ThingDTOdetails getThing(Long id) {
@@ -244,8 +246,8 @@ public class ThingService {
 
         List<Thing> things;
 
-        if (name.trim().isEmpty() || name == null) {
-            things = thingRepository.findAll();
+        if (name.equals("empty") || name.trim().isEmpty() || name.equals(null)) {
+            things = thingRepository.findAllByCzyArchiwalnyFalse();
         } else {
             things = this.findAllByNazwaContaining(name);
         }
