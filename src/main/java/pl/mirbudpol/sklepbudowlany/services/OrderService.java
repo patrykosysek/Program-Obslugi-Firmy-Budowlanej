@@ -4,8 +4,7 @@ package pl.mirbudpol.sklepbudowlany.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mirbudpol.sklepbudowlany.DTO.BasketDTO;
-import pl.mirbudpol.sklepbudowlany.DTO.OrderDTO;
+import pl.mirbudpol.sklepbudowlany.DTO.*;
 import pl.mirbudpol.sklepbudowlany.entities.Client;
 import pl.mirbudpol.sklepbudowlany.entities.ItemsOrders;
 import pl.mirbudpol.sklepbudowlany.entities.Order;
@@ -13,6 +12,7 @@ import pl.mirbudpol.sklepbudowlany.entities.Thing;
 import pl.mirbudpol.sklepbudowlany.exceptions.LackOfResources;
 import pl.mirbudpol.sklepbudowlany.exceptions.NoPermissions;
 import pl.mirbudpol.sklepbudowlany.exceptions.ResourceNotFoundException;
+import pl.mirbudpol.sklepbudowlany.repositories.ItemsOrdersRepository;
 import pl.mirbudpol.sklepbudowlany.repositories.OrderRepository;
 
 import java.text.SimpleDateFormat;
@@ -30,11 +30,9 @@ public class OrderService {
     private final ThingService thingService;
     private final OrderRepository orderRepository;
 
-
     public List<Order> findAllByKlient_Id(Long id) {
         return orderRepository.findAllByKlient_Id(id).orElseThrow(() -> new ResourceNotFoundException("Brak wcześniejszych zamówień"));
     }
-
 
     @Transactional
     public void addOrder(BasketDTO dto) {
@@ -102,6 +100,4 @@ public class OrderService {
         return orderDTOS;
 
     }
-
-
 }

@@ -262,7 +262,6 @@ public class ThingService {
 
     }
 
-
     public List<ThingDTOpage1> getItemsByCategories(List<String> categories) {
 
         Integer size = categories.size();
@@ -364,6 +363,28 @@ public class ThingService {
                 items.add(new ThingDTOpage1(this.findById(currentId), this.avgRating(currentId)));
 
 
+        }
+
+        return items;
+    }
+
+    public List<ThingDTOpage1> getItemsByAllCategories(List<String> categories) {
+        Integer size = categories.size();
+        List<ThingDTOpage1> items = new ArrayList<>();
+
+        if (size == 0)
+            return items;
+
+        List<CategoryObject> list = new ArrayList<>();
+
+        for (String name : categories) {
+            list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
+        }
+
+        for(CategoryObject categoryObject: list){
+            ThingDTOpage1 thingDTOpage1 = new ThingDTOpage1();
+            thingDTOpage1.setId(categoryObject.getThing().getId());
+            items.add(thingDTOpage1);
         }
 
         return items;

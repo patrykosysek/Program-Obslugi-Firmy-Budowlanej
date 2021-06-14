@@ -21,10 +21,11 @@ public class ThingDTOpage1 {
 
     private String zdjecia;
     private Float ocena;
+    private boolean czyArchiwalny;
 
 
     public ThingDTOpage1(Thing thing, Float sr) {
-        this(thing.getId(), thing.getNazwa(), thing.getIloscNaMagazynie(), thing.getCenaSprzedazy(), null, sr);
+        this(thing.getId(), thing.getNazwa(), thing.getIloscNaMagazynie(), thing.getCenaSprzedazy(), null, sr,  thing.getCzyArchiwalny());
 
         if (thing.getZdjecia().size() != 0)
             this.zdjecia = thing.getZdjecia().get(0).getRef();
