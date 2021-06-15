@@ -21,11 +21,11 @@ public class RegisteredClientDTO {
 
     private Long id;
 
-    @Size(min = 2, max = 20, message = "Imie powinno zawierać się w przedziale od 2 do 20 znaków")
+    @Size(min = 2, max = 20, message = "Nieprawidłowe imię")
     private String imie;
-    @Size(min = 2, max = 20, message = "Nazwisko powinno zawierać się w przedziale od 2 do 20 znaków")
+    @Size(min = 2, max = 20, message = "Nieprawidłowe nazwisko")
     private String nazwisko;
-    @Email(message = "Email jest nieprawidłowy")
+    @Email(message = "Nieprawidłowy email")
     private String email;
 
     @NotBlank(message = "Nieprawidłowy kod pocztowy")
@@ -35,10 +35,10 @@ public class RegisteredClientDTO {
     @NotBlank(message = "Nieprawidłowy numer domu")
     private String ulicaNrDomu;
 
-    @NotNull
+    @NotNull(message = "Nieprawidłowy numer telefonu")
     private String nrTelefonu;
 
-    @Size(min = 5, max = 20, message = "Hasło powinien zawierać się w przedziale od 5 do 20 znaków")
+    @Size(min = 5, max = 20, message = "Nieprawidłowe hasło")
     private String haslo;
 
     public RegisteredClientDTO(String imie, String nazwisko, String email, String kodPocztowy, String miejscowosc, String ulicaNrDomu, String nrTelefonu, String haslo) {

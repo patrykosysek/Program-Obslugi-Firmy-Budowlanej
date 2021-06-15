@@ -23,13 +23,13 @@ public class AdressDTO {
     private Country kraj;
 
     @NotBlank
-    @Size(min = 6,max = 6)
+    @Size(min = 6,max = 6,message = "Nieprawidłowy kod pocztowy")
     private String kodPocztowy;
 
-    @NotBlank
+    @NotBlank(message = "Nieprawidłowa miejscowść")
     private String miejscowosc;
 
-    @NotBlank
+    @NotBlank(message = "Nieprawidłowa ulica oraz numer domu")
     private String ulicaNrDomu;
 
 

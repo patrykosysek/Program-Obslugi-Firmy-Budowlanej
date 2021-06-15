@@ -15,7 +15,7 @@ public class ImageDTO {
 
     Long id;
 
-    @NotBlank
+    @NotBlank(message = "Nieprawidłowy link do zdjęcia")
     String ref;
 
     public ImageDTO(String ref) {
