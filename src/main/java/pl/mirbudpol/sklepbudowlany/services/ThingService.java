@@ -125,6 +125,13 @@ public class ThingService {
         return dto;
     }
 
+    public ThingDTOdetails2 getThing2(Long id) {
+
+        ThingDTOdetails2 dto = new ThingDTOdetails2(this.findById(id));
+
+        return dto;
+    }
+
     public Integer getQuantity(Long id) {
         return this.findById(id).getIloscNaMagazynie();
     }

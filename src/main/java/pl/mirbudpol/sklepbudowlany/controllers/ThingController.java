@@ -48,6 +48,14 @@ public class ThingController {
         return thingService.getThing(id);
     }
 
+    @ApiOperation("Zwraca wszystkie szczegółowe informacje o danym przedmiocie")
+    @GetMapping(path = "info/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ThingDTOdetails2 getObject2(@PathVariable Long id) {
+        return thingService.getThing2(id);
+    }
+
+
     @ApiOperation("Zwraca ilość danego przedmiotu na magazynie")
     @GetMapping(path = "/quantity/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.mirbudpol.sklepbudowlany.entities.ElectronicMaterial;
+import pl.mirbudpol.sklepbudowlany.entities.Images;
 
 import javax.validation.constraints.NotBlank;
 
@@ -20,6 +22,16 @@ public class ImageDTO {
 
     public ImageDTO(String ref) {
         this(null, ref);
+    }
+
+    public ImageDTO(Images image) {
+        this.id = image.getId();
+        this.ref = image.getRef();
+    }
+
+    public ImageDTO(ElectronicMaterial material) {
+        this.id = material.getId();
+        this.ref = material.getRef();
     }
 
 }
