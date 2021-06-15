@@ -56,15 +56,17 @@ public class ReportsService {
         List<ThingReportDTO> thingsRaport = new ArrayList<>();
         List<ThingReportDTO> thingsRaport2 = new ArrayList<>();
         List<ThingReportDTO> thingsRaport3 = new ArrayList<>();
+        List<ThingReportDTO> thingsRaport4 = new ArrayList<>();
         List<ThingDTOpage1> thingDTOpage1List = thingService.getItemsByAllCategories(dto.getCategories());
 
         for(ItemsOrders itemOrder: itemsOrders){
             Thing thing = thingService.findById(itemOrder.getPrzedmiot().getId());
             things.add(thing);
             ThingReportDTO thingReportDTO = new ThingReportDTO(thing.getId(), thing.getNazwa(), itemOrder.getIloscPrzedmiotu(), itemOrder.getCenaSprzedazy() - thing.getCenaZakupu());
+            ThingReportDTO thingReportDTO2 = new ThingReportDTO(thing.getId(), thing.getNazwa(), itemOrder.getIloscPrzedmiotu(), itemOrder.getCenaSprzedazy() - thing.getCenaZakupu());
             thingsRaport2.add(thingReportDTO);
+            thingsRaport4.add(thingReportDTO2);
         }
-
 
         Set<ThingReportDTO> set = new HashSet<>(thingsRaport2);
         thingsRaport3 = new ArrayList<>(set);
@@ -73,19 +75,20 @@ public class ReportsService {
             thingReportDTO.ilosc = 0;
             thingReportDTO.zysk = 0f;
         }
-        for(ThingReportDTO thingReportDTO2: thingsRaport2){
+
+        for(ThingReportDTO thingReportDTO2: thingsRaport4){
             for(ThingReportDTO thingReportDTO3: thingsRaport3){
                 if(thingReportDTO2.equals(thingReportDTO3)){
-                    thingReportDTO3.zysk += thingReportDTO2.zysk * thingReportDTO2.ilosc;
                     thingReportDTO3.ilosc += thingReportDTO2.ilosc;
+                    thingReportDTO3.zysk += thingReportDTO2.zysk * thingReportDTO3.ilosc;
                 }
             }
         }
-
         for(ThingDTOpage1 thingDTOpage1: thingDTOpage1List){
             for(ThingReportDTO thingReportDTO: thingsRaport3) {
                 if(thingReportDTO.getId().equals(thingDTOpage1.getId())){
                     thingsRaport.add(thingReportDTO);
+                    System.out.println(thingReportDTO.ilosc);
                     profit += thingReportDTO.getZysk();
                 }
             }
