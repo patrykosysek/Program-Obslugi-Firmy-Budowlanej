@@ -40,6 +40,7 @@ public class ThingController {
         thingService.deleteThing(id);
     }
 
+
     @ApiOperation("Zwraca wszystkie szczegółowe informacje o danym przedmiocie")
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -111,6 +112,7 @@ public class ThingController {
 
     }
 
+
     @ApiOperation("Dodaje materiał elektroniczny do danego przedmiotu")
     @PutMapping(path = "/electronical/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -125,5 +127,19 @@ public class ThingController {
         thingService.deleteElectronicalMaterial(ref, id);
     }
 
+
+    @ApiOperation("Zwraca id zdjecia")
+    @PostMapping(path = "/image/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getRecommendedThings(@RequestBody ImageDTO dto, @PathVariable Long id) {
+        return thingService.getImageId(dto, id);
+    }
+
+    @ApiOperation("Usuwa zdjecie po id")
+    @DeleteMapping(path = "/image/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void getRecommendedThings(@PathVariable Long id) {
+        thingService.deleteImageById(id);
+    }
 
 }

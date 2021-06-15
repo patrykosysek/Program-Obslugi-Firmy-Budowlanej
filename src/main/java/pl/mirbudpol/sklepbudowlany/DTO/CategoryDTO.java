@@ -18,7 +18,7 @@ public class CategoryDTO {
 
     private Long id;
 
-    
+
     @Size(min = 2, max = 20,message = "Nieprawidłowa nazwa kategorii")
     private String nazwaKategorii;
 
