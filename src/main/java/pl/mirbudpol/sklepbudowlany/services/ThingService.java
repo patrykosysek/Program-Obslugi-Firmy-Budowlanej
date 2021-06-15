@@ -31,7 +31,11 @@ public class ThingService {
     }
 
     public List<Thing> findAllByNazwaContaining(String name) {
-        return thingRepository.findAllByNazwaContainingAndCzyArchiwalnyFalse(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
+        return thingRepository.findAllByNazwaContaining(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
+    }
+
+    public List<Thing> findAll() {
+        return thingRepository.findAll();
     }
 
     public Float avgRating(Long id) {
@@ -247,7 +251,7 @@ public class ThingService {
         List<Thing> things;
 
         if (name.equals("empty") || name.trim().isEmpty() || name.equals(null)) {
-            things = thingRepository.findAllByCzyArchiwalnyFalse();
+            things = thingRepository.findAll();
         } else {
             things = this.findAllByNazwaContaining(name);
         }
