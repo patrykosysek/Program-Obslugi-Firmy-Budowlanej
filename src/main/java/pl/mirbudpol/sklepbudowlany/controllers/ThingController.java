@@ -146,8 +146,15 @@ public class ThingController {
     @ApiOperation("Usuwa zdjecie po id")
     @DeleteMapping(path = "/image/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void getRecommendedThings(@PathVariable Long id) {
+    public void deleteImageById(@PathVariable Long id) {
         thingService.deleteImageById(id);
+    }
+
+    @ApiOperation("Usuwa materiał po id")
+    @DeleteMapping(path = "/material/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteMaterialById(@PathVariable Long id) {
+        thingService.deleteMaterialById(id);
     }
 
 }

@@ -406,12 +406,17 @@ public class ThingService {
 
 
     public Long getImageId(ImageDTO dto, Long id) {
-        return this.getImageByRefAndId(dto,id).getId();
+        return this.getImageByRefAndId(dto, id).getId();
     }
 
     @Transactional
-    public void deleteImageById(Long id){
+    public void deleteImageById(Long id) {
         imagesRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteMaterialById(Long id) {
+        electronicalMaterialRepository.deleteById(id);
     }
 
 }
