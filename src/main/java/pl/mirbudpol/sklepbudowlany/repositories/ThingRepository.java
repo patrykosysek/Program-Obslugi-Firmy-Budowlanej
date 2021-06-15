@@ -13,4 +13,5 @@ public interface ThingRepository extends CrudRepository<Thing, Long>, PagingAndS
     List <Thing> findAll();
     List <Thing> findAllByCzyArchiwalnyFalse();
     Optional<List<Thing>> findAllByNazwaContaining(String name);
+    Optional<List<Thing>> findAllByNazwaContainingAndCzyArchiwalnyFalse(String name);
 }

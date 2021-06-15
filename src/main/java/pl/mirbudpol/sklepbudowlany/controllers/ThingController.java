@@ -124,4 +124,6 @@ public class ThingController {
     public void deleteElectronical(@PathVariable String ref, @PathVariable Long id) {
         thingService.deleteElectronicalMaterial(ref, id);
     }
+
+
 }

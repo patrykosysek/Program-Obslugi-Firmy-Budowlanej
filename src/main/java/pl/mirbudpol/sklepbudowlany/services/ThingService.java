@@ -31,7 +31,7 @@ public class ThingService {
     }
 
     public List<Thing> findAllByNazwaContaining(String name) {
-        return thingRepository.findAllByNazwaContaining(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
+        return thingRepository.findAllByNazwaContainingAndCzyArchiwalnyFalse(name).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono"));
     }
 
     public Float avgRating(Long id) {
@@ -106,7 +106,9 @@ public class ThingService {
 
     @Transactional
     public void deleteThing(Long id) {
-        thingRepository.deleteById(id);
+        //thingRepository.deleteById(id);
+        Thing thing = this.findById(id);
+        thing.setCzyArchiwalny(true);
     }
 
     public ThingDTOdetails getThing(Long id) {
@@ -244,8 +246,8 @@ public class ThingService {
 
         List<Thing> things;
 
-        if (name.trim().isEmpty() || name == null) {
-            things = thingRepository.findAll();
+        if (name.equals("empty") || name.trim().isEmpty() || name.equals(null)) {
+            things = thingRepository.findAllByCzyArchiwalnyFalse();
         } else {
             things = this.findAllByNazwaContaining(name);
         }
@@ -259,7 +261,6 @@ public class ThingService {
         return dtos;
 
     }
-
 
     public List<ThingDTOpage1> getItemsByCategories(List<String> categories) {
 
@@ -362,6 +363,28 @@ public class ThingService {
                 items.add(new ThingDTOpage1(this.findById(currentId), this.avgRating(currentId)));
 
 
+        }
+
+        return items;
+    }
+
+    public List<ThingDTOpage1> getItemsByAllCategories(List<String> categories) {
+        Integer size = categories.size();
+        List<ThingDTOpage1> items = new ArrayList<>();
+
+        if (size == 0)
+            return items;
+
+        List<CategoryObject> list = new ArrayList<>();
+
+        for (String name : categories) {
+            list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
+        }
+
+        for(CategoryObject categoryObject: list){
+            ThingDTOpage1 thingDTOpage1 = new ThingDTOpage1();
+            thingDTOpage1.setId(categoryObject.getThing().getId());
+            items.add(thingDTOpage1);
         }
 
         return items;
