@@ -18,16 +18,16 @@ public class RatingDTO {
 
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Brak oceny")
     private Integer ocena;
 
     @NotBlank
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 20,message = "Błędny komentarz")
     private String komentarz;
 
-    @NotNull
+    @NotNull(message = "Brak przedmiotu")
     private Long thingId;
-    @NotNull
+    @NotNull(message = "Brak klienta")
     private Long klientId;
 
     public RatingDTO(Integer ocena, String komentarz, Long thingId, Long klientId) {

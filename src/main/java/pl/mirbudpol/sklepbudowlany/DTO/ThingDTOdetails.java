@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ThingDTOdetails extends ThingDTO {
 
-    @NotNull
+    @NotNull(message = "Nieprawidłowa ocena")
     private Float ocena;
 
     @NotNull

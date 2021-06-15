@@ -14,17 +14,17 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ItemsOrdersDTO {
 
-    @NotNull
+    @NotNull(message = "Nieprawidłowa ilość przedmiotu")
     private Integer iloscPrzedmiotu;
-    @NotNull
+    @NotNull(message = "Nieprawidłowa cena sprzedaży")
     private Float cenaSprzedazy;
-    @NotNull
+    @NotNull(message = "Brak zamówienia")
     private Long orderId;
-    @NotNull
+    @NotNull(message = "Brak przedmiotu")
     ThingDTO item;
 
 
-    public ItemsOrdersDTO(ItemsOrders itemsOrders){
+    public ItemsOrdersDTO(ItemsOrders itemsOrders) {
 
         this.iloscPrzedmiotu = itemsOrders.getIloscPrzedmiotu();
         this.cenaSprzedazy = itemsOrders.getCenaSprzedazy();

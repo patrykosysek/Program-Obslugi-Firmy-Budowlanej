@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class RatingDTOdetails extends RatingDTO {
 
-    @NotNull
+    @NotNull(message = "Brak loginu")
     String login;
 
     public RatingDTOdetails(Rating rating){

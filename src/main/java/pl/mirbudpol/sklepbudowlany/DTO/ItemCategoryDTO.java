@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class ItemCategoryDTO {
 
 
-@NotNull
+@NotNull(message = "Nieprawidłowa nazwa kategorii")
 private String categoryName;
 
 }

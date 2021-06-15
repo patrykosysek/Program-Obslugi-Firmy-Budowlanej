@@ -17,15 +17,15 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
 
-    @NotNull
+    @NotNull(message = "Brak daty zamówienia")
     private String dataZamowienia;
-    @NotNull
+    @NotNull(message = "Brak potwierdzenia zrealizowania")
     private Boolean czyZrealizowane;
-    @NotNull
+    @NotNull(message = "Brak wartości zamówienia")
     private Float wartoscZamowienia;
-    @NotNull
+    @NotNull(message = "Brak klienta")
     private Long clientId;
-    @NotNull
+    @NotNull(message = "Brak zamówienia")
     private Long orderId;
     @NotNull
     private List<ItemsOrdersDTO> przedmiotyZamowienia = new ArrayList<>();
