@@ -55,6 +55,9 @@ public class ThingService {
 
     }
 
+    public Images getImageByRefAndId(ImageDTO dto, Long id) {
+        return imagesRepository.findByRefAndThingId(dto.getRef(), id).orElseThrow(() -> new ResourceNotFoundException("Nie istnieje takie zdjęcie"));
+    }
 
     @Transactional
     public Thing createThing(ThingDTO dto) {
@@ -118,6 +121,13 @@ public class ThingService {
     public ThingDTOdetails getThing(Long id) {
 
         ThingDTOdetails dto = new ThingDTOdetails(this.findById(id));
+
+        return dto;
+    }
+
+    public ThingDTOdetails2 getThing2(Long id) {
+
+        ThingDTOdetails2 dto = new ThingDTOdetails2(this.findById(id));
 
         return dto;
     }
@@ -385,13 +395,23 @@ public class ThingService {
             list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
         }
 
-        for(CategoryObject categoryObject: list){
+        for (CategoryObject categoryObject : list) {
             ThingDTOpage1 thingDTOpage1 = new ThingDTOpage1();
             thingDTOpage1.setId(categoryObject.getThing().getId());
             items.add(thingDTOpage1);
         }
 
         return items;
+    }
+
+
+    public Long getImageId(ImageDTO dto, Long id) {
+        return this.getImageByRefAndId(dto,id).getId();
+    }
+
+    @Transactional
+    public void deleteImageById(Long id){
+        imagesRepository.deleteById(id);
     }
 
 }
