@@ -390,9 +390,11 @@ public class ThingService {
             return items;
 
         List<CategoryObject> list = new ArrayList<>();
+        List<CategoryObject> list2 = new ArrayList<>();
 
         for (String name : categories) {
-            list = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
+            list2 = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
+            list.addAll(list2);
         }
 
         for (CategoryObject categoryObject : list) {

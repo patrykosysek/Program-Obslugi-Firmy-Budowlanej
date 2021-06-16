@@ -80,15 +80,15 @@ public class ReportsService {
             for(ThingReportDTO thingReportDTO3: thingsRaport3){
                 if(thingReportDTO2.equals(thingReportDTO3)){
                     thingReportDTO3.ilosc += thingReportDTO2.ilosc;
-                    thingReportDTO3.zysk += thingReportDTO2.zysk * thingReportDTO3.ilosc;
+                    thingReportDTO3.zysk += thingReportDTO2.zysk * thingReportDTO2.ilosc;
                 }
             }
         }
         for(ThingDTOpage1 thingDTOpage1: thingDTOpage1List){
+            System.out.println(thingDTOpage1.getId());
             for(ThingReportDTO thingReportDTO: thingsRaport3) {
                 if(thingReportDTO.getId().equals(thingDTOpage1.getId())){
                     thingsRaport.add(thingReportDTO);
-                    System.out.println(thingReportDTO.ilosc);
                     profit += thingReportDTO.getZysk();
                 }
             }
