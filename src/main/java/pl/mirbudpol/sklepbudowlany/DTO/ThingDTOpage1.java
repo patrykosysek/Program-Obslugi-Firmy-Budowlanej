@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.mirbudpol.sklepbudowlany.entities.Thing;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,5 +34,25 @@ public class ThingDTOpage1 {
         else
             this.zdjecia = "https://www.filtrowanie.com.pl/wp-content/uploads/2017/07/brak-zdjecia.png";
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof ThingDTOpage1)) {
+            return false;
+        }
+
+        ThingDTOpage1 e = (ThingDTOpage1) obj;
+
+        return id.equals(e.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 }

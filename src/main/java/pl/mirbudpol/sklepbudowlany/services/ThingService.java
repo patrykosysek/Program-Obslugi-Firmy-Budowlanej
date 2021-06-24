@@ -20,6 +20,7 @@ public class ThingService {
     private final ThingRepository thingRepository;
     private final RatingRepository ratingRepository;
     private final CategoryService categoryService;
+    private final CategoryRepository categoryRepository;
     private final CategoryObjectRepository categoryObjectRepository;
     private final ImagesRepository imagesRepository;
     private final ElectronicalMaterialRepository electronicalMaterialRepository;
@@ -388,11 +389,16 @@ public class ThingService {
         Integer size = categories.size();
         List<ThingDTOpage1> items = new ArrayList<>();
 
-        if (size == 0)
-            return items;
 
         List<CategoryObject> list = new ArrayList<>();
         List<CategoryObject> list2 = new ArrayList<>();
+
+        if (size == 0) {
+            List<Category> categoriesNames = categoryRepository.findAll();
+            for(Category category: categoriesNames){
+                categories.add(category.getNazwaKategorii());
+            }
+        }
 
         for (String name : categories) {
             list2 = categoryObjectService.findAllByCategory_Id(categoryService.findByNazwaKategorii(name).getId());
@@ -405,7 +411,10 @@ public class ThingService {
             items.add(thingDTOpage1);
         }
 
-        return items;
+        Set<ThingDTOpage1> set = new HashSet<>(items);
+        List<ThingDTOpage1> items2  = new ArrayList<>(set);
+
+        return items2;
     }
 
 
