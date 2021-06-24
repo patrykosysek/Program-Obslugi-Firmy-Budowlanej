@@ -320,8 +320,10 @@ public class ThingService {
                 index = 1;
             }
 
-            if (index.equals(size))
+            if (index.equals(size)) {
+                if(this.findById(currentId).getCzyArchiwalny().equals(false))
                 items.add(new ThingDTOpage1(this.findById(currentId), this.avgRating(currentId)));
+            }
 
 
         }
